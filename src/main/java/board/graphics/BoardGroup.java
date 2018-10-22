@@ -40,7 +40,7 @@ public class BoardGroup extends Group {
 
     private void initializeBlock(SizeUtil su,int x, int y){
         Rectangle rect = new Rectangle();
-        rect.setStroke(Color.BLACK);
+        rect.setFill(Color.rgb(150,0,24));
         su.sizeRect(rect,x,y);
         getChildren().add(rect);
     }

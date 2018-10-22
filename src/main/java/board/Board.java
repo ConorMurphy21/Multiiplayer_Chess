@@ -9,12 +9,12 @@ public class Board {
         return ourInstance;
     }
 
-    private Piece[][] piece = new Piece[8][8];
+    private Piece[][] pieces = new Piece[8][8];
 
     private Board() {
     }
 
-    private void initializeBoard(){
-
+    public void addToBoard(Piece piece, int x, int y){
+        pieces[x][y] = piece;
     }
 }

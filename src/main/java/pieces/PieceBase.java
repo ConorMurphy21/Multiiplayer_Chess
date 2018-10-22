@@ -1,24 +1,52 @@
 package pieces;
 
+import board.Board;
 import highlighters.Highlighter;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import pieces.graphics.PieceGroup;
+import pieces.graphics.PieceNode;
+import utils.SizeUtil;
+
 
 public abstract class PieceBase implements Piece {
 
 
-    IntegerProperty xProperty,yProperty;
+    private IntegerProperty xProperty,yProperty;
 
-    boolean isWhite, hasMoved;
+    private boolean isWhite, hasMoved;
+
+    private static SizeUtil sizeUtil;
+    private static PieceGroup group;
 
     Highlighter highlighter;
 
+    PieceNode node;
 
-    public PieceBase(){}
-    public PieceBase(boolean isWhite, Highlighter highlighter){
+    PieceBase(boolean isWhite, int x, int y){
+        xProperty = new SimpleIntegerProperty(x);
+        yProperty = new SimpleIntegerProperty(y);
         this.isWhite = isWhite;
-        this.highlighter = highlighter;
         hasMoved = false;
     }
+
+    private void bindNode(){
+        sizeUtil.bindPieceNode(node,xProperty,yProperty);
+    }
+    private void attachNodeToGroup(){
+        group.getChildren().add(node);
+    }
+    private void attachToBoard(){
+        Board.getInstance().addToBoard(this,xProperty.get(),yProperty.get());
+    }
+    public void ini(){
+        if(sizeUtil == null)sizeUtil = SizeUtil.getInstance();
+        if(group == null)group = PieceGroup.getInstance();
+        bindNode();
+        attachNodeToGroup();
+        attachToBoard();
+    }
+
 
     @Override
     public boolean isWhite() {
@@ -28,5 +56,10 @@ public abstract class PieceBase implements Piece {
     @Override
     public boolean hasMoved() {
         return hasMoved;
+    }
+
+    @Override
+    public Highlighter highlighter() {
+        return highlighter;
     }
 }

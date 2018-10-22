@@ -5,8 +5,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import pieces.graphics.PieceGroup;
 import utils.SizeUtil;
@@ -30,6 +28,8 @@ public class Main extends Application {
         Group boardGroup = BoardGroup.getInstance();
         Group highlightGroup = HighlightGroup.getInstance();
         Group pieceGroup = PieceGroup.getInstance();
+
+        ((PieceGroup) pieceGroup).initializeGame();
         //add them to a stack pane
         StackPane stack = new StackPane(boardGroup,highlightGroup,pieceGroup);
 
