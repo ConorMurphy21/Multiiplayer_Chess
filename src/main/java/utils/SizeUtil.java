@@ -1,10 +1,13 @@
 package utils;
 
+import highlighters.graphics.Highlight;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import pieces.graphics.PieceNode;
 
@@ -35,18 +38,43 @@ public class SizeUtil {
         node.yProperty().bind(size.multiply(y));
     }
 
+    public void sizeHighlight(Highlight rect, int x, int y){
+        rect.widthProperty().bind(size);
+        rect.heightProperty().bind(size);
+         if(flipped){
+            rect.xProperty().bind(new SimpleIntegerProperty(7).subtract(x).multiply(size));
+            rect.yProperty().bind(new SimpleIntegerProperty(7).subtract(y).multiply(size));
+        }else{
+            rect.xProperty().bind(size.multiply(x));
+            rect.yProperty().bind(size.multiply(y));
+        }
+    }
+
+    private void sizeNode(Node node, int x, int y, boolean flipped){
+
+    }
     public void sizeSizingRect(Rectangle node){
         node.widthProperty().bind(minDim);
         node.heightProperty().bind(minDim);
         node.setX(0);
         node.setY(0);
+        node.setFill(Color.rgb(0,0,0,0));
     }
-    public void bindPieceNode(PieceNode node, IntegerProperty x, IntegerProperty y){
+    public void sizePieceNode(PieceNode node, IntegerProperty x, IntegerProperty y){
         node.fitWidthProperty().bind(size);
         node.fitHeightProperty().bind(size);
-        NumberBinding r = (flipped)? new SimpleIntegerProperty(8).subtract(size) : size;
-        node.xProperty().bind(r.multiply(x));
-        node.yProperty().bind(r.multiply(y));
+        if(flipped){
+            node.xProperty().bind(new SimpleIntegerProperty(7).subtract(x).multiply(size));
+            node.yProperty().bind(new SimpleIntegerProperty(7).subtract(y).multiply(size));
+        }else{
+            node.xProperty().bind(size.multiply(x));
+            node.yProperty().bind(size.multiply(y));
+        }
+    }
+
+
+    public boolean getFlipped(){
+        return flipped;
     }
 
 

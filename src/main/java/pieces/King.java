@@ -1,5 +1,6 @@
 package pieces;
 
+import highlighters.KingHL;
 import pieces.graphics.PieceNode;
 
 class King extends PieceBase {
@@ -12,5 +13,7 @@ class King extends PieceBase {
         }else{
             node = new PieceNode("Chess_kdt60.png");
         }
+        highlighter = KingHL.getInstance();
+        node.setOnMouseClicked(e -> highlighter.highlight(this));
     }
 }

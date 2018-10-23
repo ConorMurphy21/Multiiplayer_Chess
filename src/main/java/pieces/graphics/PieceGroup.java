@@ -15,7 +15,11 @@ public class PieceGroup extends Group {
 
     private PieceGroup() {
         Rectangle sizer = new Rectangle();
+        sizer.setMouseTransparent(true);
         SizeUtil.getInstance().sizeSizingRect(sizer);
+        getChildren().add(sizer);
+
+        setPickOnBounds(false);
     }
 
     public void initializeGame(){

@@ -1,5 +1,6 @@
 package pieces;
 
+import highlighters.DiagonalHL;
 import pieces.graphics.PieceNode;
 
 public class Bishop extends PieceBase {
@@ -10,5 +11,7 @@ public class Bishop extends PieceBase {
         }else{
             node = new PieceNode("Chess_bdt60.png");
         }
+        highlighter = DiagonalHL.getInstance();
+        node.setOnMouseClicked(e -> highlighter.highlight(this));
     }
 }

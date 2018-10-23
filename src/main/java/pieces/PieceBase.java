@@ -31,7 +31,7 @@ public abstract class PieceBase implements Piece {
     }
 
     private void bindNode(){
-        sizeUtil.bindPieceNode(node,xProperty,yProperty);
+        sizeUtil.sizePieceNode(node,xProperty,yProperty);
     }
     private void attachNodeToGroup(){
         group.getChildren().add(node);

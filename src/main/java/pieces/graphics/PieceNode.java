@@ -14,6 +14,7 @@ public class PieceNode extends ImageView {
             Image image = new Image(getClass().getClassLoader().getResourceAsStream(path));
             images.put(path,image);
         }
+        setPickOnBounds(true);
         setImage(images.get(path));
     }
 

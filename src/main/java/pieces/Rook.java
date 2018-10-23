@@ -1,5 +1,6 @@
 package pieces;
 
+import highlighters.StraightHL;
 import pieces.graphics.PieceNode;
 
 public class Rook extends PieceBase {
@@ -10,5 +11,7 @@ public class Rook extends PieceBase {
         }else{
             node = new PieceNode("Chess_rdt60.png");
         }
+        highlighter = StraightHL.getInstance();
+        node.setOnMouseClicked(e -> highlighter.highlight(this));
     }
 }

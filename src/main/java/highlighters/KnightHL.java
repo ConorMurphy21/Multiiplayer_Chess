@@ -2,14 +2,14 @@ package highlighters;
 
 import pieces.Piece;
 
-public class StraightHL extends HighlighterBase{
-    private static StraightHL ourInstance = new StraightHL();
+public class KnightHL extends HighlighterBase {
+    private static KnightHL ourInstance = new KnightHL();
 
-    public static StraightHL getInstance() {
+    public static KnightHL getInstance() {
         return ourInstance;
     }
 
-    private StraightHL() {
+    private KnightHL() {
     }
 
     @Override

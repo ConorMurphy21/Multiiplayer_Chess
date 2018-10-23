@@ -1,5 +1,6 @@
 package pieces;
 
+import highlighters.PondHL;
 import pieces.graphics.PieceNode;
 
 class Pond extends PieceBase {
@@ -10,6 +11,9 @@ class Pond extends PieceBase {
         }else{
             node = new PieceNode("Chess_pdt60.png");
         }
+        highlighter = PondHL.getInstance();
+
+        node.setOnMouseClicked(e -> highlighter.highlight(this));
 
     }
 
