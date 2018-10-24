@@ -17,4 +17,8 @@ public class Board {
     public void addToBoard(Piece piece, int x, int y){
         pieces[x][y] = piece;
     }
+
+    public Piece[][] getPieces(){
+        return pieces;
+    }
 }

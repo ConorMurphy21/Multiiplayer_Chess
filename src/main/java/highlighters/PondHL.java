@@ -18,7 +18,7 @@ public class PondHL extends HighlighterBase{
     }
 
     @Override
-    int[][] attackAggressorOrStillProtect(Piece p) {
+    int[][] attackAggressorOrStillProtect(Piece p,Piece a) {
         return new int[0][];
     }
 

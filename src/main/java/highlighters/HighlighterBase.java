@@ -1,23 +1,25 @@
 package highlighters;
 
+import board.Board;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.HighlightGroup;
 import pieces.Piece;
 import utils.CheckChecker;
 
-import java.util.List;
 
 public abstract class HighlighterBase implements Highlighter{
 
 
     private HighlightGroup group;
 
+    protected Piece[][] pieces;
+
                     //this method should find the piece from which the x,y coordinates protects the king from
                     //if the given piece is not protecting this should return null
     abstract Piece findAggressor(Piece p);
 
                      //find all moves that can occur while still protecting the king
-    abstract int[][] attackAggressorOrStillProtect(Piece p);
+    abstract int[][] attackAggressorOrStillProtect(Piece p,Piece a);
 
                     //this method is called if the last move was a check
                     //this will return all the moves that can protect the king
@@ -29,6 +31,7 @@ public abstract class HighlighterBase implements Highlighter{
 
 
     public void highlight(Piece p){
+        if(pieces == null)pieces = Board.getInstance().getPieces();
         if(group == null)group = HighlightGroup.getInstance();
         //there's a sizing node in here so we must be careful to just remove the highlights and not it
         group.getChildren().removeIf(o -> o instanceof Highlight);
@@ -36,7 +39,7 @@ public abstract class HighlighterBase implements Highlighter{
         Piece aggressor = findAggressor(p);
         int[][] aggressorMoves = null, protectKing = null, finalMoves = null;
         if(aggressor != null){
-            aggressorMoves = attackAggressorOrStillProtect(p);
+            aggressorMoves = attackAggressorOrStillProtect(p,aggressor);
         }
         if(CheckChecker.isCheck()){
             protectKing = protectKing(p);
@@ -54,8 +57,8 @@ public abstract class HighlighterBase implements Highlighter{
         }
 
         //adds the list of final moves to the highlightGroup
-        for(int i = 0; i < finalMoves.length; i++){
-            Highlight hl = new Highlight(finalMoves[i][0],finalMoves[i][1]);
+        for (int[] finalMove : finalMoves) {
+            Highlight hl = new Highlight(finalMove[0], finalMove[1]);
             group.getChildren().add(hl);
 
         }
