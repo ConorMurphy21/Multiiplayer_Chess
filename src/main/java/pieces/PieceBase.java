@@ -48,6 +48,25 @@ public abstract class PieceBase implements Piece {
     }
 
 
+    public void movePiece(int x, int y){
+        xProperty.set(x);
+        yProperty.set(y);
+    }
+
+    @Override
+    public int getX() {
+        return xProperty.get();
+    }
+
+    @Override
+    public int getY() {
+        return yProperty.get();
+    }
+
+    public PieceNode getNode(){
+        return node;
+    }
+
     @Override
     public boolean isWhite() {
         return isWhite;

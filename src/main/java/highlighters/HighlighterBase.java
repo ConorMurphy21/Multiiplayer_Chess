@@ -58,7 +58,7 @@ public abstract class HighlighterBase implements Highlighter{
 
         //adds the list of final moves to the highlightGroup
         for (int[] finalMove : finalMoves) {
-            Highlight hl = new Highlight(finalMove[0], finalMove[1]);
+            Highlight hl = new Highlight(finalMove[0], finalMove[1],p);
             group.getChildren().add(hl);
 
         }
