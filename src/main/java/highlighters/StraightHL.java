@@ -36,10 +36,29 @@ public class StraightHL extends HighlighterBase{
 
         ArrayList<Vec> points = new ArrayList<>();
 
-        for (int i = p.getX(); i < 8 - p.getX(); i++) {
-            points.add(new Vec(i, p.getY()));
+        for(int i = p.getX()+1; i < 8; i++){
+            if(addAndBreakIfEnd(points,p,i,p.getY()))break;
+        }
+        for(int i = p.getX()-1; i >= 0; i--){
+            if(addAndBreakIfEnd(points,p,i,p.getY()))break;
+        }
+        for(int i = p.getY()+1; i < 8; i++){
+            if(addAndBreakIfEnd(points,p,p.getX(),i))break;
+        }
+        for(int i = p.getY()-1; i >= 0; i--){
+            if(addAndBreakIfEnd(points,p,p.getX(),i))break;
         }
 
         return points;
+    }
+
+    private boolean addAndBreakIfEnd(List<Vec> points,Piece p, int x, int y){
+        if(pieces[x][y] == null){
+            points.add(new Vec(x,y));
+            return false;
+        }else if(pieces[x][y].isWhite() != p.isWhite()){
+            points.add(new Vec(x,y));
+        }
+        return true;
     }
 }

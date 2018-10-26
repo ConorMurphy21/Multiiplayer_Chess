@@ -3,6 +3,7 @@ package highlighters;
 import pieces.Piece;
 import utils.Vec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PondHL extends HighlighterBase {
@@ -32,7 +33,10 @@ public class PondHL extends HighlighterBase {
 
     @Override
     List<Vec> regularHighlight(Piece p) {
-        return null;
+        List<Vec> list = new ArrayList<Vec>();
+        list.add(new Vec(4,5));
+        list.add(new Vec(4,4));
+        return list;
     }
 
 }
