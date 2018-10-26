@@ -1,6 +1,9 @@
 package highlighters;
 
 import pieces.Piece;
+import utils.Vec;
+
+import java.util.List;
 
 public class KnightHL extends HighlighterBase {
     private static KnightHL ourInstance = new KnightHL();
@@ -18,17 +21,18 @@ public class KnightHL extends HighlighterBase {
     }
 
     @Override
-    int[][] attackAggressorOrStillProtect(Piece p,Piece a) {
-        return new int[0][];
+    List<Vec> attackAggressorOrStillProtect(Piece p, Piece a) {
+        return null;
     }
 
     @Override
-    int[][] protectKing(Piece p) {
-        return new int[0][];
+    List<Vec> protectKing(Piece p) {
+        return null;
     }
 
     @Override
-    int[][] regularHighlight(Piece p) {
-        return new int[0][];
+    List<Vec> regularHighlight(Piece p) {
+        return null;
     }
+
 }

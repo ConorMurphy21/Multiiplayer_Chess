@@ -1,6 +1,10 @@
 package highlighters;
 
 import pieces.Piece;
+import utils.Vec;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StraightHL extends HighlighterBase{
     private static StraightHL ourInstance = new StraightHL();
@@ -18,17 +22,24 @@ public class StraightHL extends HighlighterBase{
     }
 
     @Override
-    int[][] attackAggressorOrStillProtect(Piece p,Piece a) {
-        return new int[0][];
+    List<Vec> attackAggressorOrStillProtect(Piece p, Piece a) {
+        return null;
     }
 
     @Override
-    int[][] protectKing(Piece p) {
-        return new int[0][];
+    List<Vec> protectKing(Piece p) {
+        return null;
     }
 
     @Override
-    int[][] regularHighlight(Piece p) {
-        return new int[0][];
+    List<Vec> regularHighlight(Piece p) {
+
+        ArrayList<Vec> points = new ArrayList<>();
+
+        for (int i = p.getX(); i < 8 - p.getX(); i++) {
+            points.add(new Vec(i, p.getY()));
+        }
+
+        return points;
     }
 }

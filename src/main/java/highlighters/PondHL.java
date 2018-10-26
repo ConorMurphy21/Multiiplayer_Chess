@@ -1,8 +1,11 @@
 package highlighters;
 
 import pieces.Piece;
+import utils.Vec;
 
-public class PondHL extends HighlighterBase{
+import java.util.List;
+
+public class PondHL extends HighlighterBase {
     private static PondHL ourInstance = new PondHL();
 
     public static PondHL getInstance() {
@@ -18,18 +21,18 @@ public class PondHL extends HighlighterBase{
     }
 
     @Override
-    int[][] attackAggressorOrStillProtect(Piece p,Piece a) {
-        return new int[0][];
+    List<Vec> attackAggressorOrStillProtect(Piece p, Piece a) {
+        return null;
     }
 
     @Override
-    int[][] protectKing(Piece p) {
-        return new int[0][];
+    List<Vec> protectKing(Piece p) {
+        return null;
     }
 
     @Override
-    int[][] regularHighlight(Piece p) {
-        int[][] r = {{4,5},{4,4},{4,6}};
-        return r;
+    List<Vec> regularHighlight(Piece p) {
+        return null;
     }
+
 }

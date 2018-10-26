@@ -1,8 +1,11 @@
 package highlighters;
 
 import pieces.Piece;
+import utils.Vec;
 
-public class DiagonalHL extends HighlighterBase{
+import java.util.List;
+
+public class DiagonalHL extends HighlighterBase {
     private static DiagonalHL ourInstance = new DiagonalHL();
 
     public static DiagonalHL getInstance() {
@@ -18,17 +21,17 @@ public class DiagonalHL extends HighlighterBase{
     }
 
     @Override
-    int[][] attackAggressorOrStillProtect(Piece p,Piece a) {
-        return new int[0][];
+    List<Vec> attackAggressorOrStillProtect(Piece p, Piece a) {
+        return null;
     }
 
     @Override
-    int[][] protectKing(Piece p) {
-        return new int[0][];
+    List<Vec> protectKing(Piece p) {
+        return null;
     }
 
     @Override
-    int[][] regularHighlight(Piece p) {
-        return new int[0][];
+    List<Vec> regularHighlight(Piece p) {
+        return null;
     }
 }
