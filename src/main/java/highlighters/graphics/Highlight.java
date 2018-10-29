@@ -25,18 +25,8 @@ public class Highlight extends Rectangle {
         setOnMouseEntered(e -> setFill(select));
         setOnMouseExited(e -> setFill(color));
         setOnMouseClicked(e -> {
-            Piece p = pieces[x][y];
-            if(p != null)
-                PieceGroup.getInstance().getChildren().remove(p.getNode());
-
-            pieces[piece.getX()][piece.getY()] = null;
-
-            piece.movePiece(x,y);
-
-            pieces[x][y] = piece;
-
-
-            HighlightGroup.getInstance().getChildren().removeIf(o -> o instanceof Highlight);
+            Board.getInstance().movePiece(piece,x,y);
+            HighlightGroup.clear();
         });
     }
 }

@@ -3,6 +3,7 @@ package highlighters;
 import board.Board;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.HighlightGroup;
+import pieces.King;
 import pieces.Piece;
 import utils.CheckChecker;
 import utils.Vec;
@@ -21,7 +22,14 @@ public abstract class HighlighterBase implements Highlighter {
 
     //this method should find the piece from which the x,y coordinates protects the king from
     //if the given piece is not protecting this should return null
-    abstract Piece findAggressor(Piece p);
+    Piece findAggressor(Piece p){
+        Vec king = (p.isWhite()) ? Board.getInstance().getW_king() : Board.getInstance().getB_king();
+
+        double slope = (p.getY()-king.getY())/(double)(p.getX() - king.getX());
+
+        System.out.println(slope);
+        return null;
+    }
 
     //find all moves that can occur while still protecting the king
     abstract List<Vec> attackAggressorOrStillProtect(Piece p, Piece a);

@@ -3,7 +3,7 @@ package pieces;
 import highlighters.KingHL;
 import pieces.graphics.PieceNode;
 
-class King extends PieceBase {
+public class King extends PieceBase {
 
     King(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
