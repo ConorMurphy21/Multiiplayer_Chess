@@ -3,6 +3,7 @@ package highlighters;
 import pieces.Piece;
 import utils.Vec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KnightHL extends HighlighterBase {
@@ -11,6 +12,11 @@ public class KnightHL extends HighlighterBase {
     public static KnightHL getInstance() {
         return ourInstance;
     }
+
+    private static int[][] options = {
+            {1,2},{-1,-2},{-1,2},{1,-2},
+            {2,1},{-2,-1},{2,-1},{-2,1}
+    };
 
     private KnightHL() {
     }
@@ -32,7 +38,7 @@ public class KnightHL extends HighlighterBase {
 
     @Override
     List<Vec> regularHighlight(Piece p) {
-        return null;
+        return highlightAllOptions(p,options);
     }
 
 }

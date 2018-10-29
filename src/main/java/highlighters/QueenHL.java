@@ -3,6 +3,7 @@ package highlighters;
 import pieces.Piece;
 import utils.Vec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QueenHL extends HighlighterBase {
@@ -11,6 +12,9 @@ public class QueenHL extends HighlighterBase {
     public static QueenHL getInstance() {
         return ourInstance;
     }
+
+    private StraightHL straightHL = StraightHL.getInstance();
+    private DiagonalHL diagonalHL = DiagonalHL.getInstance();
 
     private QueenHL() {
     }
@@ -32,7 +36,10 @@ public class QueenHL extends HighlighterBase {
 
     @Override
     List<Vec> regularHighlight(Piece p) {
-        return null;
+        List<Vec> points = new ArrayList<>();
+        points.addAll(straightHL.regularHighlight(p));
+        points.addAll(diagonalHL.regularHighlight(p));
+        return points;
     }
 
 }

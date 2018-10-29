@@ -52,13 +52,4 @@ public class StraightHL extends HighlighterBase{
         return points;
     }
 
-    private boolean addAndBreakIfEnd(List<Vec> points,Piece p, int x, int y){
-        if(pieces[x][y] == null){
-            points.add(new Vec(x,y));
-            return false;
-        }else if(pieces[x][y].isWhite() != p.isWhite()){
-            points.add(new Vec(x,y));
-        }
-        return true;
-    }
 }

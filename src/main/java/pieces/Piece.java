@@ -9,6 +9,8 @@ public interface Piece {
 
     boolean hasMoved();
 
+    void setMoved();
+
     Highlighter highlighter();
 
     PieceNode getNode();

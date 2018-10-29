@@ -25,7 +25,7 @@ public class SizeUtil {
         minDim = Bindings.min(width,height);
         size = minDim.divide(8);
 
-        flipped = false;
+        flipped = true;
 
     }
 

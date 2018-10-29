@@ -6,6 +6,13 @@ import utils.Vec;
 import java.util.List;
 
 public class KingHL extends HighlighterBase {
+
+    private static int[][] options = {
+            {-1,-1},{0,-1},{1,-1},
+            {-1,0}, /*x,y*/{1,0},
+            {-1,1}, {0,1}, {1,1}
+    };
+
     private static KingHL ourInstance = new KingHL();
 
     public static KingHL getInstance() {
@@ -32,7 +39,7 @@ public class KingHL extends HighlighterBase {
 
     @Override
     List<Vec> regularHighlight(Piece p) {
-        return null;
+        return highlightAllOptions(p,options);
     }
 
 }

@@ -34,8 +34,40 @@ public class PondHL extends HighlighterBase {
     @Override
     List<Vec> regularHighlight(Piece p) {
         List<Vec> list = new ArrayList<Vec>();
-        list.add(new Vec(4,5));
-        list.add(new Vec(4,4));
+        if(p.isWhite()){
+            if(pieces[p.getX()][p.getY()-1] == null){
+                list.add(new Vec(p.getX(),p.getY()-1));
+                if(!p.hasMoved() && pieces[p.getX()][p.getY()-2] == null)
+                    list.add(new Vec(p.getX(),p.getY()-2));
+            }
+            if(p.getX() < 7) {
+                if (pieces[p.getX() + 1][p.getY() - 1] != null &&
+                        pieces[p.getX() + 1][p.getY() - 1].isWhite() != p.isWhite())
+                    list.add(new Vec(p.getX() + 1, p.getY() - 1));
+            }
+            if(p.getX() > 0) {
+                if (pieces[p.getX() - 1][p.getY() - 1] != null &&
+                        pieces[p.getX() - 1][p.getY() - 1].isWhite() != p.isWhite())
+                    list.add(new Vec(p.getX() - 1, p.getY() - 1));
+            }
+        }else{
+            if(pieces[p.getX()][p.getY()+1] == null){
+                list.add(new Vec(p.getX(),p.getY()+1));
+                if(!p.hasMoved() && pieces[p.getX()][p.getY()+2] == null)
+                    list.add(new Vec(p.getX(),p.getY()+2));
+            }
+
+            if(p.getX() < 7) {
+                if (pieces[p.getX() + 1][p.getY() + 1] != null &&
+                        pieces[p.getX() + 1][p.getY() + 1].isWhite() != p.isWhite())
+                    list.add(new Vec(p.getX() + 1, p.getY() + 1));
+            }
+            if(p.getX() > 0) {
+                if (pieces[p.getX() - 1][p.getY() + 1] != null &&
+                        pieces[p.getX() - 1][p.getY() + 1].isWhite() != p.isWhite())
+                    list.add(new Vec(p.getX() - 1, p.getY() + 1));
+            }
+        }
         return list;
     }
 

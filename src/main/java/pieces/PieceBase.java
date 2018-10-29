@@ -77,6 +77,10 @@ public abstract class PieceBase implements Piece {
         return hasMoved;
     }
 
+    public void setMoved(){
+        hasMoved = true;
+    }
+
     @Override
     public Highlighter highlighter() {
         return highlighter;
