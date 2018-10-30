@@ -20,16 +20,6 @@ public class QueenHL extends HighlighterBase {
     }
 
     @Override
-    Piece findAggressor(Piece p) {
-        return null;
-    }
-
-    @Override
-    List<Vec> attackAggressorOrStillProtect(Piece p, Piece a) {
-        return null;
-    }
-
-    @Override
     List<Vec> protectKing(Piece p) {
         return null;
     }

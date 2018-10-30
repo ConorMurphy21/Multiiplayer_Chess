@@ -36,6 +36,7 @@ public class Board {
             if(piece.isWhite())w_king = new Vec(x,y);
             else b_king = new Vec(x,y);
         }
+        piece.setMoved();
     }
 
     public Piece[][] getPieces(){

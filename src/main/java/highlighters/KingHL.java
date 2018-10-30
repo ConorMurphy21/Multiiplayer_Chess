@@ -23,12 +23,7 @@ public class KingHL extends HighlighterBase {
     }
 
     @Override
-    Piece findAggressor(Piece p) {
-        return null;
-    }
-
-    @Override
-    List<Vec> attackAggressorOrStillProtect(Piece p, Piece a) {
+    List<Vec> findAggressorMoves(Piece p) {
         return null;
     }
 
