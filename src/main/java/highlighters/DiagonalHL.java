@@ -17,11 +17,6 @@ public class DiagonalHL extends HighlighterBase {
     }
 
     @Override
-    List<Vec> protectKing(Piece p) {
-        return null;
-    }
-
-    @Override
     List<Vec> regularHighlight(Piece p) {
         ArrayList<Vec> points = new ArrayList<>();
 
@@ -39,5 +34,20 @@ public class DiagonalHL extends HighlighterBase {
         }
 
         return points;
+    }
+
+    @Override
+    public boolean isDiagonal() {
+        return true;
+    }
+
+    @Override
+    public boolean isStoppable() {
+        return true;
+    }
+
+    @Override
+    public boolean isStraight() {
+        return false;
     }
 }

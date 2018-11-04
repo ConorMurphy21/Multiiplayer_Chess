@@ -28,13 +28,27 @@ public class KingHL extends HighlighterBase {
     }
 
     @Override
-    List<Vec> protectKing(Piece p) {
-        return null;
-    }
-
-    @Override
     List<Vec> regularHighlight(Piece p) {
         return highlightAllOptions(p,options);
     }
 
+    @Override
+    public boolean canAttack(Piece p, Vec agr) {
+        return false;
+    }
+
+    @Override
+    public boolean isStraight() {
+        return false;
+    }
+
+    @Override
+    public boolean isDiagonal() {
+        return false;
+    }
+
+    @Override
+    public boolean isStoppable() {
+        return false;
+    }
 }

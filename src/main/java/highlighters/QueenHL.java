@@ -20,11 +20,6 @@ public class QueenHL extends HighlighterBase {
     }
 
     @Override
-    List<Vec> protectKing(Piece p) {
-        return null;
-    }
-
-    @Override
     List<Vec> regularHighlight(Piece p) {
         List<Vec> points = new ArrayList<>();
         points.addAll(straightHL.regularHighlight(p));
@@ -32,4 +27,18 @@ public class QueenHL extends HighlighterBase {
         return points;
     }
 
+    @Override
+    public boolean isStraight() {
+        return true;
+    }
+
+    @Override
+    public boolean isDiagonal() {
+        return true;
+    }
+
+    @Override
+    public boolean isStoppable() {
+        return true;
+    }
 }

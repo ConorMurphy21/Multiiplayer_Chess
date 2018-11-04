@@ -16,12 +16,6 @@ public class PondHL extends HighlighterBase {
     private PondHL() {
     }
 
-
-    @Override
-    List<Vec> protectKing(Piece p) {
-        return null;
-    }
-
     //ponds are wierd, and it's special logic for what moves it can make is here
     List<Vec> findAggressorSpecial (Piece p, Piece aggressor, boolean straight, double slope){
         if(Double.isInfinite(slope)){
@@ -73,4 +67,25 @@ public class PondHL extends HighlighterBase {
         return list;
     }
 
+    @Override
+    public boolean canAttack(Piece p, int x, int y) {
+        return (attackMoves(p,dir(p)).contains(new Vec(x,y)));
+    }
+
+    @Override public boolean canMove(Piece p, int x, int y){
+        return (normalMoves(p,dir(p)).contains(new Vec(x,y)));
+    }
+
+    @Override
+    public boolean isStraight() {
+        return false;
+    }
+    @Override
+    public boolean isDiagonal() {
+        return false;
+    }
+    @Override
+    public boolean isStoppable() {
+        return false;
+    }
 }

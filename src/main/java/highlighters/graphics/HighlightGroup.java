@@ -18,7 +18,7 @@ public class HighlightGroup extends Group {
         //setPickOnBounds(false);
     }
 
-    public static void clear(){
+    static void clear(){
         ourInstance.getChildren().removeIf(o -> o instanceof Highlight);
     }
 }

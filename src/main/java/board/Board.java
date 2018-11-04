@@ -38,12 +38,13 @@ public class Board {
             else b_king = new Vec(x,y);
         }
 
+        piece.setMoved();
+        lastMoved = piece;
+
         //checks if the move is a check and sets it
         //this will eventually move to the reciever of the packet, but for now it is here
         Check.getInstance().checkCheck();
 
-        piece.setMoved();
-        lastMoved = piece;
 
     }
 
@@ -60,7 +61,7 @@ public class Board {
         return w_king;
     }
 
-    Piece getLastMoved() {
+    public Piece getLastMoved() {
         return lastMoved;
     }
 }

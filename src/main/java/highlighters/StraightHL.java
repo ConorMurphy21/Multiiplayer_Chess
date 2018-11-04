@@ -16,12 +16,6 @@ public class StraightHL extends HighlighterBase{
     private StraightHL() {
     }
 
-
-    @Override
-    List<Vec> protectKing(Piece p) {
-        return null;
-    }
-
     @Override
     List<Vec> regularHighlight(Piece p) {
 
@@ -43,4 +37,18 @@ public class StraightHL extends HighlighterBase{
         return points;
     }
 
+    @Override
+    public boolean isStraight() {
+        return true;
+    }
+
+    @Override
+    public boolean isDiagonal() {
+        return false;
+    }
+
+    @Override
+    public boolean isStoppable() {
+        return true;
+    }
 }

@@ -3,7 +3,7 @@ package pieces;
 import highlighters.StraightHL;
 import pieces.graphics.PieceNode;
 
-public class Rook extends PieceBase {
+class Rook extends PieceBase {
     Rook(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if(isWhite) {

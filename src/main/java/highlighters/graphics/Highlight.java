@@ -4,7 +4,6 @@ import board.Board;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import pieces.Piece;
-import pieces.graphics.PieceGroup;
 import utils.SizeUtil;
 
 public class Highlight extends Rectangle {

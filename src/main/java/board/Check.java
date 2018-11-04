@@ -1,9 +1,6 @@
 package board;
 
 import pieces.Piece;
-import utils.IterationObj;
-import utils.IterationObj.PieceBreak;
-import utils.IterationObj.PieceReturn;
 
 import utils.Vec;
 
@@ -26,29 +23,15 @@ public class Check {
     void checkCheck(){
 
         Piece p = board.getLastMoved();
+                    //check already equals false so don't need to reset it
+        if(p == null)return;
         //get opposite king of just moved
-        Vec king = (p.isWhite()) ? Board.getInstance().getW_king() : Board.getInstance().getB_king();
+        Vec king = (p.isWhite()) ? Board.getInstance().getB_king() : Board.getInstance().getW_king();
                                                 //make an object that will iterate from the king to the piece
-        IterationObj obj = IterationObj.create(king.getX(),king.getY(),p.getX(),p.getY());
 
-        if (!(Math.abs(obj.getSlope()) >= 1 || obj.getSlope() == 0)) {
-            check = false;
-            return;
-        }
-        //don't include the king in the iteration
-        obj.iterateStartLoc();
+        check = p.highlighter().canAttack(p,king);
 
-        PieceBreak br = (x,y)->{
-            if(board.getPieces()[x][y] != null)return true;
-
-            if(x == p.getX() && y == p.getY())return true;
-
-            return true;
-        };
-
-        PieceReturn<Boolean> ret = (x,y)->(x == p.getX() && y == p.getY());
-
-        check = obj.iterate(br,ret);
+        System.out.println(check);
     }
 
     public boolean isCheck(){
