@@ -22,42 +22,53 @@ public class PondHL extends HighlighterBase {
         return null;
     }
 
+    //ponds are wierd, and it's special logic for what moves it can make is here
+    List<Vec> findAggressorSpecial (Piece p, Piece aggressor, boolean straight, double slope){
+        if(Double.isInfinite(slope)){
+            return normalMoves(p,dir(p));
+        }else if(!straight){
+            List<Vec> moves = attackMoves(p,dir(p));
+            moves.removeIf(v -> v.getX() != aggressor.getX() || v.getY() != aggressor.getY());
+            return moves;
+        }
+        else return new ArrayList<>();
+    }
+
     @Override
     List<Vec> regularHighlight(Piece p) {
-        List<Vec> list = new ArrayList<Vec>();
-        if(p.isWhite()){
-            if(pieces[p.getX()][p.getY()-1] == null){
-                list.add(new Vec(p.getX(),p.getY()-1));
-                if(!p.hasMoved() && pieces[p.getX()][p.getY()-2] == null)
-                    list.add(new Vec(p.getX(),p.getY()-2));
-            }
-            if(p.getX() < 7) {
-                if (pieces[p.getX() + 1][p.getY() - 1] != null &&
-                        pieces[p.getX() + 1][p.getY() - 1].isWhite() != p.isWhite())
-                    list.add(new Vec(p.getX() + 1, p.getY() - 1));
-            }
-            if(p.getX() > 0) {
-                if (pieces[p.getX() - 1][p.getY() - 1] != null &&
-                        pieces[p.getX() - 1][p.getY() - 1].isWhite() != p.isWhite())
-                    list.add(new Vec(p.getX() - 1, p.getY() - 1));
-            }
-        }else{
-            if(pieces[p.getX()][p.getY()+1] == null){
-                list.add(new Vec(p.getX(),p.getY()+1));
-                if(!p.hasMoved() && pieces[p.getX()][p.getY()+2] == null)
-                    list.add(new Vec(p.getX(),p.getY()+2));
-            }
+        List<Vec> list = new ArrayList<>();
+        int dir = dir(p);
+        list.addAll(normalMoves(p,dir));
+        list.addAll(attackMoves(p,dir));
+        return list;
+    }
 
-            if(p.getX() < 7) {
-                if (pieces[p.getX() + 1][p.getY() + 1] != null &&
-                        pieces[p.getX() + 1][p.getY() + 1].isWhite() != p.isWhite())
-                    list.add(new Vec(p.getX() + 1, p.getY() + 1));
-            }
-            if(p.getX() > 0) {
-                if (pieces[p.getX() - 1][p.getY() + 1] != null &&
-                        pieces[p.getX() - 1][p.getY() + 1].isWhite() != p.isWhite())
-                    list.add(new Vec(p.getX() - 1, p.getY() + 1));
-            }
+    private int dir(Piece p){
+        return (p.isWhite()) ? -1 : 1;
+    }
+
+    private List<Vec> normalMoves(Piece p, int dir){
+
+        List<Vec> list = new ArrayList<>();
+        if(pieces[p.getX()][p.getY()+dir] == null){
+            list.add(new Vec(p.getX(),p.getY()+dir));
+            if(!p.hasMoved() && pieces[p.getX()][p.getY()+ 2*dir] == null)
+                list.add(new Vec(p.getX(),p.getY()+2*dir));
+        }
+        return list;
+    }
+
+    private List<Vec> attackMoves(Piece p, int dir){
+        List<Vec> list = new ArrayList<>();
+        if(p.getX() < 7) {
+            if (pieces[p.getX() + 1][p.getY() + dir] != null &&
+                    pieces[p.getX() + 1][p.getY() + dir].isWhite() != p.isWhite())
+                list.add(new Vec(p.getX() + 1, p.getY() + dir));
+        }
+        if(p.getX() > 0) {
+            if (pieces[p.getX() - 1][p.getY() + dir] != null &&
+                    pieces[p.getX() - 1][p.getY() + dir].isWhite() != p.isWhite())
+                list.add(new Vec(p.getX() - 1, p.getY() + dir));
         }
         return list;
     }

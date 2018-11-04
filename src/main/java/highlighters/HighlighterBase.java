@@ -65,13 +65,13 @@ public abstract class HighlighterBase implements Highlighter {
 
                         //if the piece in question can move along the same line as
                         if(isMatchHighlighter(p.highlighter(),straight)) {
-                            System.out.println("here4 :" + x + ", " + y);
                             moves.add(new Vec(x, y));
                             return moves;
 
-                        }else if(p.highlighter() instanceof PondHL && Double.isInfinite(obj.getSlope())){
-                            return regularHighlight(p);
+                        }else if(p.highlighter() instanceof PondHL){
+                            return PondHL.getInstance().findAggressorSpecial(p,piece,straight,obj.getSlope());
                         }
+
                         //returns empty list because the piece at this point cannot move
                         //whereas returning null would imply it does not have to protect
                         moves.clear();
@@ -88,7 +88,6 @@ public abstract class HighlighterBase implements Highlighter {
         }
         return null;
     }
-
 
     //returns if the highlighter is same type as boolean
     private boolean isMatchHighlighter(Highlighter highlighter,boolean straight){
