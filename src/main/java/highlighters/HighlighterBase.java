@@ -1,12 +1,14 @@
 package highlighters;
 
 import board.Board;
+import board.Check;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.HighlightGroup;
 import pieces.Piece;
 import utils.IterationObj;
 import utils.Vec;
-import utils.IterationObj.*;
+import utils.IterationObj.PieceBreak;
+import utils.IterationObj.PieceReturn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +148,7 @@ public abstract class HighlighterBase implements Highlighter {
 
         aggressorMoves = findAggressorMoves(p);
 
-        if (Board.getInstance().isCheck()) {
+        if (Check.getInstance().isCheck()) {
             protectKing = protectKing(p);
         }
 

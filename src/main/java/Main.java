@@ -27,9 +27,10 @@ public class Main extends Application {
         //initialize the 3 layers of the scene
         Group boardGroup = BoardGroup.getInstance();
         Group highlightGroup = HighlightGroup.getInstance();
-        Group pieceGroup = PieceGroup.getInstance();
+        PieceGroup pieceGroup = PieceGroup.getInstance();
 
-        ((PieceGroup) pieceGroup).initializeGame();
+        pieceGroup.initializeGame();
+
         //add them to a stack pane
         StackPane stack = new StackPane(boardGroup,highlightGroup,pieceGroup);
 

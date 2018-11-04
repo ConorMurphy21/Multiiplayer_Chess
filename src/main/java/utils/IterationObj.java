@@ -35,8 +35,8 @@ public class IterationObj {
     //note will not stop at toX, will just go in that direction
     public static IterationObj create(int fromX, int fromY, int toX, int toY){
         double slope = slope(fromX,fromY,toX,toY);
-        Iterator xIt = pickxIt(slope,toX,fromX);
-        Iterator yIt = pickyIt(slope,toY,fromY);
+        Iterator xIt = pickxIt(slope,fromX,toX);
+        Iterator yIt = pickyIt(slope,fromY,toY);
         return new IterationObj(fromX,fromY,xIt,yIt,slope);
     }
 
@@ -46,21 +46,21 @@ public class IterationObj {
 
     @NotNull
     @Contract(pure = true)
-    private static Iterator pickxIt(double slope, int x, int kx){
+    private static Iterator pickxIt(double slope, int fromX, int toX){
         if(Double.isInfinite(slope)){
             return i->i;
         }else{ //slope = 1 or -1 or 0
-            return (x > kx) ? i->i+1: i-> i-1;
+            return (toX > fromX) ? i->i+1: i-> i-1;
         }
     }
 
     @NotNull
     @Contract(pure = true)
-    private static Iterator pickyIt(double slope, int y, int ky){
+    private static Iterator pickyIt(double slope, int fromY, int toY){
         if(slope == 0){
             return i->i;
         }else{ //slope = infinity 1 or -1
-            return (y > ky) ? i->i+1: i-> i-1;
+            return (toY > fromY) ? i->i+1: i-> i-1;
         }
     }
 

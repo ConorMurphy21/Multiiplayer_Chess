@@ -14,7 +14,6 @@ public class Board {
 
     private Vec b_king = new Vec(4,0), w_king = new Vec(4,7);
     private Piece lastMoved;
-    private boolean check;
 
     private Piece[][] pieces = new Piece[8][8];
 
@@ -38,17 +37,16 @@ public class Board {
             if(piece.isWhite())w_king = new Vec(x,y);
             else b_king = new Vec(x,y);
         }
+
+        //checks if the move is a check and sets it
+        //this will eventually move to the reciever of the packet, but for now it is here
+        Check.getInstance().checkCheck();
+
         piece.setMoved();
         lastMoved = piece;
-    }
-
-    private void checkIfCheck(){
 
     }
 
-    public boolean isCheck() {
-        return check;
-    }
 
     public Piece[][] getPieces(){
         return pieces;
@@ -60,5 +58,9 @@ public class Board {
 
     public Vec getW_king() {
         return w_king;
+    }
+
+    Piece getLastMoved() {
+        return lastMoved;
     }
 }
