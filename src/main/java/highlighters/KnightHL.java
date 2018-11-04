@@ -3,7 +3,6 @@ package highlighters;
 import pieces.Piece;
 import utils.Vec;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class KnightHL extends HighlighterBase {

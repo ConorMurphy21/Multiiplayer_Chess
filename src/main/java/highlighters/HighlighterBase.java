@@ -4,8 +4,9 @@ import board.Board;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.HighlightGroup;
 import pieces.Piece;
-import utils.CheckChecker;
+import utils.IterationObj;
 import utils.Vec;
+import utils.IterationObj.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,106 +19,86 @@ public abstract class HighlighterBase implements Highlighter {
 
     protected static Piece[][] pieces;
 
+    /*** finds the moves that any piece can make if it is protecting the king***/
 
-    @FunctionalInterface
-    private interface Iterator{
-        int iterate(int i);
-    }
-
-    //this method should find the piece from which the x,y coordinates protects the king from
-    //if the given piece is not protecting this should return null
-    List<Vec> findAggressorMoves(Piece p) {
+    //this returns null if there is no aggressor to protect from, and empty if there is but there are no moves
+    List<Vec> findAggressorMoves(Piece p){
         Vec king = (p.isWhite()) ? Board.getInstance().getW_king() : Board.getInstance().getB_king();
+        IterationObj obj = IterationObj.create(king.getX(),king.getY(),p.getX(),p.getY());
+        if (!(Math.abs(obj.getSlope()) >= 1 || obj.getSlope() == 0)) return null;
 
-        double slope = (p.getY() - king.getY()) / (double) (p.getX() - king.getX());
-        if (!(Math.abs(slope) >= 1 || slope == 0)) return null;
+        ArrayList<Vec> moves = new ArrayList<>();
 
-        Iterator xIt = pickxIt(slope,p.getX(), king.getX());
-        Iterator yIt = pickyIt(slope,p.getY(), king.getY());
+        PieceBreak br = (x,y)-> {
 
-        boolean straight = Math.abs(slope)!= 1;
+            moves.add(new Vec(x,y));
 
-        List<Vec> moves = new ArrayList<>();
-        boolean isPastPiece = false;
-        for(int i = king.getX(), j = king.getY(); i < 8 && i >= 0 && j < 8 && j >= 0; i = xIt.iterate(i), j = yIt.iterate(j)){
-            //easier to start on king and skip it then try to ini for every case
-            if(i == king.getX() && j == king.getY())continue;
+            //break if it's the piece we were going to
+            if(x == p.getX() && y == p.getY())return true;
 
+            //can return here if there is something inbetween the king and the piece
+            return (pieces[x][y] != null);
+        };
+                                        //returns whether the next step should happen or not
+        PieceReturn<Boolean> ret = (x,y)-> (x == p.getX() && y == p.getY());
 
-            //there are two things we are looking for:
-            //1: if there is a piece the piece and the king
-            //if so then we can stop because the piece is not protecting the king
-            //2: if the first condition is not true:
-            // we need to check for whether or not there is a piece on further on the line that can attack it
-            if(i == p.getX() && j == p.getY()) {
-                isPastPiece = true;
-                continue;
-            }
+        //iterate once so not on the king
+        obj.iterateStartLoc();
 
-            //check for 1
-            if(!isPastPiece){
+        if(obj.iterate(br,ret)){
 
-                if(pieces[i][j] != null)return null;
+            boolean straight = Math.abs(obj.getSlope())!= 1;
 
-            }else{
-                //add move to possible highlights
-                moves.add(new Vec(i,j));
+            PieceBreak br2 = (x,y)-> {
+                moves.add(new Vec(x,y));
+                return(pieces[x][y] != null);
+            };
 
-                //if the piece at the current position does not equal null
-                Piece pp;
-                if((pp = pieces[i][j]) != null){
+            PieceReturn<List<Vec>> ret2 = (x,y)-> {
+                //if it makes it through the loop to the edge of the board without reaching anything
+                if(x == -1)return null;
 
-                    if(pp.isWhite() == p.isWhite()){
-                        //if of the same color return null
-                        return null;
-
-                        //if the piece can attack along the same line the king and og piece form
-                    } else if(isMatchHighlighter(pp.highlighter(),straight)){
+                Piece piece = pieces[x][y];
+                if(piece.isWhite() == p.isWhite()){
+                    return null;
+                } else if(isMatchHighlighter(piece.highlighter(),straight)){
 
                         //if the piece in question can move along the same line as
                         if(isMatchHighlighter(p.highlighter(),straight)) {
-                            moves.add(new Vec(i, j));
+                            System.out.println("here4 :" + x + ", " + y);
+                            moves.add(new Vec(x, y));
                             return moves;
 
-                        }else if(p.highlighter() instanceof PondHL && Double.isInfinite(slope)){
+                        }else if(p.highlighter() instanceof PondHL && Double.isInfinite(obj.getSlope())){
                             return regularHighlight(p);
                         }
                         //returns empty list because the piece at this point cannot move
                         //whereas returning null would imply it does not have to protect
                         moves.clear();
                         return moves;
-                    }
+                }else {
+                    return null;
                 }
 
-            }
+            };
+
+            obj.ressetStartLoc(p.getX(),p.getY());
+            obj.iterateStartLoc();
+            return obj.iterate(br2,ret2);
         }
         return null;
     }
 
-    private Iterator pickxIt(double slope, int x, int kx){
-        if(Double.isInfinite(slope)){
-           return i->i;
-        }else{ //slope = 1 or -1 or 0
-            return (x > kx) ? i->i+1: i-> i-1;
-        }
-    }
-    private Iterator pickyIt(double slope, int y, int ky){
-        if(slope == 0){
-            return i->i;
-        }else{ //slope = infinity 1 or -1
-            return (y > ky) ? i->i+1: i-> i-1;
-        }
-    }
-
-
 
     //returns if the highlighter is same type as boolean
-    boolean isMatchHighlighter(Highlighter highlighter,boolean straight){
+    private boolean isMatchHighlighter(Highlighter highlighter,boolean straight){
         if(highlighter instanceof QueenHL)return true;
         if(straight) return highlighter instanceof StraightHL;
         return highlighter instanceof DiagonalHL;
     }
 
+
+    /***Abstract methods that must be highlighted***/
     //this method is called if the last move was a check
     //this will return all the moves that can protect the king
     //this implies, block the attackers move, or take the attacker
@@ -127,10 +108,13 @@ public abstract class HighlighterBase implements Highlighter {
     abstract List<Vec> regularHighlight(Piece p);
 
 
+
+    /****METHODS FOR SUBCLASSES TO USE***/
+
     List<Vec> highlightAllOptions(Piece p, int[][] options) {
         List<Vec> points = new ArrayList<>();
-        for (int i = 0; i < options.length; i++) {
-            int x = p.getX() + options[i][0], y = p.getY() + options[i][1];
+        for (int[] opt : options) {
+            int x = p.getX() + opt[0], y = p.getY() + opt[1];
             if (x < 0 || y < 0 || x >= 8 || y >= 8) continue;
             if (pieces[x][y] != null && pieces[x][y].isWhite() == p.isWhite()) continue;
             points.add(new Vec(x, y));
@@ -151,6 +135,8 @@ public abstract class HighlighterBase implements Highlighter {
     }
 
 
+    /***DOES ALL OF THE GENERIC WORK, BASED OFF OF OVERRIDEN METHODS***/
+
     public void highlight(Piece p) {
         if (pieces == null) pieces = Board.getInstance().getPieces();
         if (group == null) group = HighlightGroup.getInstance();
@@ -161,7 +147,7 @@ public abstract class HighlighterBase implements Highlighter {
 
         aggressorMoves = findAggressorMoves(p);
 
-        if (CheckChecker.isCheck()) {
+        if (Board.getInstance().isCheck()) {
             protectKing = protectKing(p);
         }
 
