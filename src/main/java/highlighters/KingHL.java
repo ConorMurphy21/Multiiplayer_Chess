@@ -58,7 +58,12 @@ public class KingHL extends HighlighterBase {
             obj.iterateStartLoc();
             boolean straight = obj.isStraight();
 
-            PieceBreak br = (xx,yy)->pieces[xx][yy] != null;
+            PieceBreak br = (xx,yy)->{
+                if(pieces[xx][yy] != null){
+                    return pieces[xx][yy] != p;
+                }
+                return false;
+            };
 
             PieceReturn<Boolean> ret = (xx,yy)->{
                 if(xx == -1)return false;

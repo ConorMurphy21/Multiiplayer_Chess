@@ -230,7 +230,8 @@ public abstract class HighlighterBase implements Highlighter {
 
     /***DOES ALL OF THE GENERIC WORK, BASED OFF OF OVERRIDEN METHODS***/
 
-    final public void highlight(Piece p) {
+
+    final public List<Vec> highlights(Piece p){
         if (pieces == null) {
             board = Board.getInstance();
             pieces = board.getPieces();
@@ -248,7 +249,7 @@ public abstract class HighlighterBase implements Highlighter {
         }
 
         if (aggressorMoves != null && protectKing != null) {
-            return;
+            return new ArrayList<>();
         } else if (aggressorMoves != null) {
             finalMoves = aggressorMoves;
         } else if (protectKing != null) {
@@ -257,8 +258,15 @@ public abstract class HighlighterBase implements Highlighter {
             finalMoves = regularHighlight(p);
         }
 
+        return finalMoves;
+    }
+
+
+    final public void highlight(Piece p) {
+
+        List<Vec> moves = highlights(p);
         //adds the list of final moves to the highlightGroup
-        for (Vec finalMove : finalMoves) {
+        for (Vec finalMove : moves) {
             Highlight hl = new Highlight(finalMove.getX(), finalMove.getY(), p);
             group.getChildren().add(hl);
         }

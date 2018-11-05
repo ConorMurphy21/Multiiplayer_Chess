@@ -82,7 +82,23 @@ public class Check {
             check = true;
         }
 
-        System.out.println(check);
+        if(check){
+
+            boolean checkMate = isCheckMate(p);
+
+        }
+
+    }
+
+    private boolean isCheckMate(Piece lastMoved){
+        for(Piece[] row : board.getPieces()){
+            for(Piece p : row){
+                if(p == null)continue;
+                if(p.isWhite() == lastMoved.isWhite())continue;
+                if(!p.highlighter().highlights(p).isEmpty())return false;
+            }
+        }
+        return true;
     }
 
     public List<Piece> getCheckers(){

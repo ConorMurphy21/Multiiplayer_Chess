@@ -3,7 +3,11 @@ package highlighters;
 import pieces.Piece;
 import utils.Vec;
 
+import java.util.List;
+
 public interface Highlighter {
+
+    List<Vec> highlights(Piece p);
 
     void highlight(Piece p);
 
