@@ -81,6 +81,14 @@ public class IterationObj {
         return slope;
     }
 
+    public boolean isNormalSlope(){
+        return Math.abs(getSlope()) >= 1 || getSlope() == 0;
+    }
+
+    public boolean isStraight(){
+        return Math.abs(slope) != 1;
+    }
+
     public <T> T iterate(PieceBreak br , PieceReturn<T> ret){
         for(int i = x, j = y ; i < 8 && i >= 0 && j < 8 && j >= 0; i = xIt.iterate(i), j = yIt.iterate(j)){
             if(br.breakLoop(i,j))return ret.ret(i,j);

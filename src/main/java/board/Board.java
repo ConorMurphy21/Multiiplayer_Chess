@@ -14,6 +14,7 @@ public class Board {
 
     private Vec b_king = new Vec(4,0), w_king = new Vec(4,7);
     private Piece lastMoved;
+    private Vec lastMovedLocation;
 
     private Piece[][] pieces = new Piece[8][8];
 
@@ -25,10 +26,12 @@ public class Board {
     }
 
     public void movePiece(Piece piece, int x, int y){
+
+        lastMovedLocation = new Vec(piece.getX(),piece.getY());
+
         Piece p = pieces[x][y];
         if(p != null)
             PieceGroup.getInstance().getChildren().remove(p.getNode());
-
 
         pieces[piece.getX()][piece.getY()] = null;
         piece.movePiece(x,y);
@@ -61,7 +64,9 @@ public class Board {
         return w_king;
     }
 
-    public Piece getLastMoved() {
+    Piece getLastMoved() {
         return lastMoved;
     }
+
+    Vec getLastMovedLocation(){return lastMovedLocation; }
 }

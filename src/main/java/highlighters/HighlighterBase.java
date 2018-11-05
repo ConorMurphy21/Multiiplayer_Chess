@@ -29,8 +29,7 @@ public abstract class HighlighterBase implements Highlighter {
     List<Vec> findAggressorMoves(Piece p){
         Vec king = sameKing(p);
         IterationObj obj = IterationObj.create(king.getX(),king.getY(),p.getX(),p.getY());
-        if (!(Math.abs(obj.getSlope()) >= 1 || obj.getSlope() == 0)) return null;
-
+        if(!obj.isNormalSlope())return null;
 
         ArrayList<Vec> moves = new ArrayList<>();
 
@@ -52,7 +51,7 @@ public abstract class HighlighterBase implements Highlighter {
 
         if(obj.iterate(br,ret)){
 
-            boolean straight = Math.abs(obj.getSlope())!= 1;
+            boolean straight = obj.isStraight();
 
             PieceBreak br2 = (x,y)-> {
                 moves.add(new Vec(x,y));
@@ -97,7 +96,7 @@ public abstract class HighlighterBase implements Highlighter {
 
     //returns if the highlighter is same type as boolean
     //is more efficent then checking if a piece can attack, if it is already known that the piece is on the same lines
-    boolean isMatchHighlighter(Highlighter highlighter,boolean straight){
+    public static boolean isMatchHighlighter(Highlighter highlighter, boolean straight){
         return (straight & highlighter.isStraight()) || (!straight && highlighter.isDiagonal());
     }
 
@@ -106,12 +105,17 @@ public abstract class HighlighterBase implements Highlighter {
     //this method is called if the last move was a check
     //this will return all the moves that can protect the king
     //this implies, block the attackers move, or take the attacker
-    List<Vec> protectKing(Piece p, Piece agr){
+    List<Vec> protectKing(Piece p, List<Piece> agrs){
         ArrayList<Vec> moves = new ArrayList<>();
+
+                    //for anybody except the king there is nothing that can be done at this point
+        if(agrs.size() != 1)return moves;
+
+        Piece agr = agrs.get(0);
 
         if(agr.highlighter().isStoppable()){
             Vec king = sameKing(p);
-            IterationObj obj = IterationObj.create(king.getX(),king.getY(),agr.getX(),agr.getY());
+            IterationObj obj = IterationObj.create(king.getX(),king.getY(), agr.getX(), agr.getY());
             obj.iterateStartLoc();
 
             IterationObj.PieceBreak br = (x,y)->{
@@ -131,7 +135,7 @@ public abstract class HighlighterBase implements Highlighter {
 
         }else {
             //if can hit the unstoppable piece do it
-            if(canAttack(p,agr.getX(),agr.getY()))moves.add(new Vec(agr.getX(),agr.getY()));
+            if(canAttack(p, agr.getX(), agr.getY()))moves.add(new Vec(agr.getX(), agr.getY()));
         }
 
         return moves;
@@ -164,9 +168,9 @@ public abstract class HighlighterBase implements Highlighter {
         //make an object that will iterate from the king to the piece
         IterationObj obj = IterationObj.create(aX,aY,p.getX(),p.getY());
 
-        if (!(Math.abs(obj.getSlope()) >= 1 || obj.getSlope() == 0)) return false;
+        if (!obj.isNormalSlope()) return false;
 
-        boolean straight = Math.abs(obj.getSlope())!= 1;
+        boolean straight = obj.isStraight();
 
         //if it cannot attack on the same line as the line the king sits on from it
         if(!isMatchHighlighter(p.highlighter(),straight))return false;
@@ -191,12 +195,14 @@ public abstract class HighlighterBase implements Highlighter {
 
     /****METHODS FOR SUBCLASSES TO USE***/
 
-    final Vec sameKing(Piece p){
+    private Vec sameKing(Piece p){
         return (p.isWhite()) ? board.getW_king() : board.getB_king();
     }
     final Vec OppKing(Piece p){
         return (p.isWhite()) ? board.getB_king() : board.getW_king();
     }
+
+
 
     final List<Vec> highlightAllOptions(Piece p, int[][] options) {
         List<Vec> points = new ArrayList<>();
@@ -238,7 +244,7 @@ public abstract class HighlighterBase implements Highlighter {
         aggressorMoves = findAggressorMoves(p);
 
         if (Check.getInstance().isCheck()) {
-            protectKing = protectKing(p,board.getLastMoved());
+            protectKing = protectKing(p,Check.getInstance().getCheckers());
         }
 
         if (aggressorMoves != null && protectKing != null) {
