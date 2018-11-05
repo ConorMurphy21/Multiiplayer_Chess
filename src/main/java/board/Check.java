@@ -31,6 +31,8 @@ public class Check {
 
         check = p.highlighter().canAttack(p,king);
 
+        //TODO: check if the place the piece previously held opens up an attack route
+
         System.out.println(check);
     }
 

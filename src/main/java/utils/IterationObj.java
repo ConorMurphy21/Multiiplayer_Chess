@@ -23,6 +23,7 @@ public class IterationObj {
     private int x, y;
     private Iterator xIt,yIt;
     private double slope;
+
     private IterationObj(int x, int y, Iterator xIt, Iterator yIt, double slope){
         this.x = x;
         this.y = y;

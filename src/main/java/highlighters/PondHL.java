@@ -69,7 +69,7 @@ public class PondHL extends HighlighterBase {
 
     @Override
     public boolean canAttack(Piece p, int x, int y) {
-        return (attackMoves(p,dir(p)).contains(new Vec(x,y)));
+        return (p.getY() + dir(p) == y && Math.abs(x - p.getX()) == 1);
     }
 
     @Override public boolean canMove(Piece p, int x, int y){

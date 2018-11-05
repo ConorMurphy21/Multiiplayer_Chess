@@ -31,6 +31,7 @@ public abstract class HighlighterBase implements Highlighter {
         IterationObj obj = IterationObj.create(king.getX(),king.getY(),p.getX(),p.getY());
         if (!(Math.abs(obj.getSlope()) >= 1 || obj.getSlope() == 0)) return null;
 
+
         ArrayList<Vec> moves = new ArrayList<>();
 
         PieceBreak br = (x,y)-> {
@@ -67,6 +68,7 @@ public abstract class HighlighterBase implements Highlighter {
                     return null;
                 } else if(isMatchHighlighter(piece.highlighter(),straight)){
 
+                        //it is not inefficient to check this this far in, as it is required to see if there is a piece on the same lines anyways
                         //if the piece in question can move along the same line as
                         if(isMatchHighlighter(p.highlighter(),straight)) {
                             moves.add(new Vec(x, y));
@@ -94,7 +96,8 @@ public abstract class HighlighterBase implements Highlighter {
     }
 
     //returns if the highlighter is same type as boolean
-    private boolean isMatchHighlighter(Highlighter highlighter,boolean straight){
+    //is more efficent then checking if a piece can attack, if it is already known that the piece is on the same lines
+    boolean isMatchHighlighter(Highlighter highlighter,boolean straight){
         return (straight & highlighter.isStraight()) || (!straight && highlighter.isDiagonal());
     }
 
@@ -103,7 +106,7 @@ public abstract class HighlighterBase implements Highlighter {
     //this method is called if the last move was a check
     //this will return all the moves that can protect the king
     //this implies, block the attackers move, or take the attacker
-    private List<Vec> protectKing(Piece p, Piece agr){
+    List<Vec> protectKing(Piece p, Piece agr){
         ArrayList<Vec> moves = new ArrayList<>();
 
         if(agr.highlighter().isStoppable()){
@@ -162,6 +165,12 @@ public abstract class HighlighterBase implements Highlighter {
         IterationObj obj = IterationObj.create(aX,aY,p.getX(),p.getY());
 
         if (!(Math.abs(obj.getSlope()) >= 1 || obj.getSlope() == 0)) return false;
+
+        boolean straight = Math.abs(obj.getSlope())!= 1;
+
+        //if it cannot attack on the same line as the line the king sits on from it
+        if(!isMatchHighlighter(p.highlighter(),straight))return false;
+
         //don't include the king in the iteration
         obj.iterateStartLoc();
 
