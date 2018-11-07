@@ -19,13 +19,13 @@ public class SizeUtil {
     //but the indexes in the actual board are the same
     private boolean flipped;
 
-    private SizeUtil(ReadOnlyDoubleProperty width, ReadOnlyDoubleProperty height) {
+    private SizeUtil(ReadOnlyDoubleProperty width, ReadOnlyDoubleProperty height, boolean isWhite) {
         //size of a single node
 
         minDim = Bindings.min(width,height);
         size = minDim.divide(8);
 
-        flipped = false;
+        flipped = !isWhite;
 
     }
 
@@ -73,15 +73,15 @@ public class SizeUtil {
     }
 
 
-    public boolean getFlipped(){
+    public boolean isFlipped(){
         return flipped;
     }
 
 
     /** INSTANCE MANAGEMENT **/
-    public static SizeUtil createInstance(ReadOnlyDoubleProperty width, ReadOnlyDoubleProperty height){
+    public static SizeUtil createInstance(ReadOnlyDoubleProperty width, ReadOnlyDoubleProperty height,boolean isWhite){
         if(ourInstance != null)return ourInstance;
-        else ourInstance = new SizeUtil(width, height);
+        else ourInstance = new SizeUtil(width, height,isWhite);
         return ourInstance;
     }
 

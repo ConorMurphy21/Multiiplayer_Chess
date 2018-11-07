@@ -13,7 +13,6 @@ class Pond extends PieceBase {
         }
         highlighter = PondHL.getInstance();
 
-        node.setOnMouseClicked(e -> highlighter.highlight(this));
 
     }
 

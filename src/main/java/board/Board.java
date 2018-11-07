@@ -49,6 +49,7 @@ public class Board {
         Check.getInstance().checkCheck();
 
 
+
     }
 
 

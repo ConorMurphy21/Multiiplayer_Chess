@@ -13,6 +13,5 @@ public class Knight extends PieceBase {
             node = new PieceNode("Chess_ndt60.png");
         }
         highlighter = KnightHL.getInstance();
-        node.setOnMouseClicked(e -> highlighter.highlight(this));
     }
 }

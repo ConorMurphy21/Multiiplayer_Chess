@@ -1,11 +1,16 @@
+package main;
+
 import board.graphics.BoardGroup;
 import highlighters.graphics.HighlightGroup;
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import networking.Client;
 import pieces.graphics.PieceGroup;
 import utils.SizeUtil;
 
@@ -15,14 +20,31 @@ public class Main extends Application {
         launch(args);
     }
 
+
+    private static BooleanProperty thisTurn = new SimpleBooleanProperty(false);
+
+    private static Stage stage;
+
     @Override
     public void start(Stage primaryStage) {
-                    //ini simple borderpane as root
+
+        stage = primaryStage;
+
+        Client client = new Client();
+        client.start();
+
+
+    }
+
+    public static void ini(boolean isWhite){
+                     //ini simple borderpane as root
         BorderPane root = new BorderPane();
                             //starting size of 600 x 600
         Scene scene = new Scene(root,600,600);
                             //create size util because it is necessary for the group initializers
-        SizeUtil.createInstance(scene.widthProperty(),scene.heightProperty());
+        SizeUtil.createInstance(scene.widthProperty(),scene.heightProperty(), isWhite);
+
+        thisTurn.setValue(isWhite);
 
         //initialize the 3 layers of the scene
         Group boardGroup = BoardGroup.getInstance();
@@ -36,10 +58,14 @@ public class Main extends Application {
 
         //add to root, set scene and show
         root.setCenter(stack);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setScene(scene);
+        stage.show();
+
 
     }
 
+    public static BooleanProperty getThisTurn(){
+        return thisTurn;
+    }
 
 }

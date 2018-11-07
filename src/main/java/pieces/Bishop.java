@@ -12,6 +12,5 @@ class Bishop extends PieceBase {
             node = new PieceNode("Chess_bdt60.png");
         }
         highlighter = DiagonalHL.getInstance();
-        node.setOnMouseClicked(e -> highlighter.highlight(this));
     }
 }

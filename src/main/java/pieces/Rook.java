@@ -12,6 +12,5 @@ class Rook extends PieceBase {
             node = new PieceNode("Chess_rdt60.png");
         }
         highlighter = StraightHL.getInstance();
-        node.setOnMouseClicked(e -> highlighter.highlight(this));
     }
 }

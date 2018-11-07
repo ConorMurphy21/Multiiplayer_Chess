@@ -4,6 +4,7 @@ import board.Board;
 import board.Check;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.HighlightGroup;
+import main.Main;
 import pieces.Piece;
 import utils.IterationObj;
 import utils.Vec;
@@ -263,6 +264,8 @@ public abstract class HighlighterBase implements Highlighter {
 
 
     final public void highlight(Piece p) {
+
+        if(!Main.getThisTurn().get())return;
 
         List<Vec> moves = highlights(p);
         //adds the list of final moves to the highlightGroup

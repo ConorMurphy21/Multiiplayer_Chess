@@ -45,6 +45,10 @@ public abstract class PieceBase implements Piece {
         bindNode();
         attachNodeToGroup();
         attachToBoard();
+        if(sizeUtil.isFlipped() == isWhite){
+            node.setMouseTransparent(true);
+        }
+        node.setOnMouseClicked(e -> highlighter.highlight(this));
     }
 
 

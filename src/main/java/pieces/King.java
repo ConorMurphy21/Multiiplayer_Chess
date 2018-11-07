@@ -14,6 +14,6 @@ public class King extends PieceBase {
             node = new PieceNode("Chess_kdt60.png");
         }
         highlighter = KingHL.getInstance();
-        node.setOnMouseClicked(e -> highlighter.highlight(this));
+
     }
 }
