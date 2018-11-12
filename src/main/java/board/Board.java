@@ -1,5 +1,8 @@
 package board;
 
+import javafx.beans.property.BooleanProperty;
+import main.Main;
+import networking.Client;
 import pieces.King;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
@@ -15,6 +18,7 @@ public class Board {
     private Vec b_king = new Vec(4,0), w_king = new Vec(4,7);
     private Piece lastMoved;
     private Vec lastMovedLocation;
+    private BooleanProperty turn = Main.getThisTurn();
 
     private Piece[][] pieces = new Piece[8][8];
 
@@ -23,6 +27,22 @@ public class Board {
 
     public void addToBoard(Piece piece, int x, int y){
         pieces[x][y] = piece;
+    }
+
+
+    public void movePieceFromServer(int x, int y, int newX, int newY){
+
+        movePiece(pieces[x][y],newX,newY);
+
+        Check.getInstance().checkCheck();
+    }
+
+    public void movePieceFromClient(Piece piece, int x, int y){
+
+        Client.getInstance().sendMove(piece.getX(),piece.getY(),x,y);
+
+        movePiece(piece,x,y);
+
     }
 
     public void movePiece(Piece piece, int x, int y){
@@ -44,11 +64,8 @@ public class Board {
         piece.setMoved();
         lastMoved = piece;
 
-        //checks if the move is a check and sets it
-        //this will eventually move to the reciever of the packet, but for now it is here
-        Check.getInstance().checkCheck();
-
-
+        //switch whos turn it is
+        turn.setValue(!turn.get());
 
     }
 

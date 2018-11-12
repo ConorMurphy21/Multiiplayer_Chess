@@ -42,14 +42,10 @@ public class Player extends Thread{
     }
 
                 //this is called by the opponent
-    private void sendMove(int[] points){
-        output.println("01,"+isWhite+","+points[0]+","+points[1]+","+points[2]+","+points[3]);
+    private synchronized void sendMove(int[] points){
+        output.println("01,"+points[0]+","+points[1]+","+points[2]+","+points[3]);
     }
 
-    private boolean correctPlayer(String whiteStr){
-        boolean white = Boolean.parseBoolean(whiteStr);
-        return (white == isWhite);
-    }
 
     public void run() {
         try {
@@ -59,20 +55,18 @@ public class Player extends Thread{
             // Repeatedly get commands from the client and process them.
             while (true) {
                 String message = input.readLine();
+                System.out.println(message);
                 String[] parts = message.split(",");
 
-                //this is only needed because I'm testing this on the same computer and need to distinguish
-                //between players besides ips
-                if(!correctPlayer(parts[1]))continue;
                     //move packet
-                if(parts[0].equals("01")){
+                if(parts[0].equals("04")){
                     int[] nums = new int[4];
                     for(int i = 0; i < 4; i++){
-                        nums[i] = Integer.parseInt(parts[i+2]);
+                        nums[i] = Integer.parseInt(parts[i+1]);
                     }
                     opponent.sendMove(nums);
                         //quit packet
-                }else if(message.equals("02")){
+                }else if(message.equals("05")){
 
 
                 }

@@ -30,8 +30,9 @@ public class Main extends Application {
 
         stage = primaryStage;
 
-        Client client = new Client();
+        Client client =  Client.getInstance();
         client.start();
+
 
 
     }

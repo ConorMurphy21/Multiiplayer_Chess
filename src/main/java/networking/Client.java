@@ -1,12 +1,10 @@
 package networking;
 
+import board.Board;
 import javafx.application.Platform;
 import main.Main;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class Client extends Thread {
@@ -23,23 +21,29 @@ public class Client extends Thread {
         return ourInstance;
     }
 
+    private Client(){}
 
     private void startConnection(String ip) throws IOException {
-        clientSocket = new Socket(ip, PORT);
-        out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        this.clientSocket = new Socket(ip, PORT);
+        this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        this.out = new PrintWriter(clientSocket.getOutputStream(), true);
     }
 
-    private boolean correctPlayer(String whiteStr){
-        boolean white = Boolean.parseBoolean(whiteStr);
-        return (white == isWhite);
+    public synchronized void sendMove(int x, int y, int newX, int newY){
+        if(out == null) System.out.println("It's the output");
+        String send = "04,"+x+","+y+","+newX+","+newY;
+        out.println(send);
     }
+
+
+
     //all of the recieving happens from here
     @Override
     public void run() {
         try {
             startConnection("localhost");
             System.out.println("waiting for opponent...");
+
 
             while(true){
                 String message = in.readLine();
@@ -54,14 +58,19 @@ public class Client extends Thread {
 
                     //move packet
                 }else if(parts[0].equals("01")){
-                    //only necessary for testing
-                    if(!correctPlayer(parts[1]))continue;
+
+
+                    int[] nums = new int[4];
+                    for(int i = 0; i < 4; i++){
+                        nums[i] = Integer.parseInt(parts[i+1]);
+                    }
+
+                    Platform.runLater(()->Board.getInstance().movePieceFromServer(nums[0],nums[1],nums[2],nums[3]));
+
 
                     //disconnect packet
                 }else if(parts[0].equals("02")){
 
-                    //only necessary for testing
-                    if(!correctPlayer(parts[1]))continue;
 
                 }
 
@@ -71,14 +80,18 @@ public class Client extends Thread {
             //stopConnection();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } finally {
 
-        try {
-            clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    public synchronized PrintWriter getOut(){
+        return out;
+    }
 
 }

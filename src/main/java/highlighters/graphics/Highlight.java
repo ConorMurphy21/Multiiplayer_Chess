@@ -24,7 +24,7 @@ public class Highlight extends Rectangle {
         setOnMouseEntered(e -> setFill(select));
         setOnMouseExited(e -> setFill(color));
         setOnMouseClicked(e -> {
-            Board.getInstance().movePiece(piece,x,y);
+            Board.getInstance().movePieceFromClient(piece,x,y);
             HighlightGroup.clear();
         });
     }
