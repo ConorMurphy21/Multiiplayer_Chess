@@ -1,6 +1,7 @@
 package utils;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
 
@@ -25,7 +26,7 @@ public class PieceAnimator extends AnimationTimer {
         this.yDif = endY - startY;
         this.take = take;
         startTime = System.nanoTime();
-        piece.getNode().toFront();
+        Platform.runLater(()->piece.getNode().toFront());
 
     }
 
@@ -35,8 +36,8 @@ public class PieceAnimator extends AnimationTimer {
         double percent = (l - startTime)/ENDTIME;
 
         if(percent >= 1){
-            piece.movePiece(endX,endY);
-            if(take != null)PieceGroup.getInstance().getChildren().remove(take.getNode());
+            Platform.runLater(()->piece.movePiece(endX,endY));
+            if(take != null)Platform.runLater(()->PieceGroup.getInstance().getChildren().remove(take.getNode()));
             stop();
             return;
         }
@@ -44,9 +45,9 @@ public class PieceAnimator extends AnimationTimer {
         double x = startX + (xDif * percent);
         double y = startY + (yDif * percent);
 
-        piece.movePiece(x,y);
+        Platform.runLater(()->piece.movePiece(x,y));
 
-        if(take != null)take.getNode().setOpacity(1-percent);
+        if(take != null)Platform.runLater(()->take.getNode().setOpacity(1-percent));
 
     }
 }

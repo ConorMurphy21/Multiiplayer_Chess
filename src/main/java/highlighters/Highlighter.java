@@ -1,5 +1,6 @@
 package highlighters;
 
+import highlighters.graphics.Highlight;
 import pieces.Piece;
 import utils.Vec;
 
@@ -20,8 +21,6 @@ public interface Highlighter {
     boolean isStoppable();
 
     boolean canAttack(Piece p, Vec agr);
-
-    boolean canAttack(Piece p, Piece agr);
 
     boolean canAttack(Piece p, int x, int y);
 

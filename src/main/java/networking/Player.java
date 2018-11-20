@@ -47,7 +47,7 @@ class Player extends Thread{
     }
 
     private synchronized void sendDis(){
-        output.println("02"+true);
+        output.println("02,"+true);
         interrupt();
     }
 
@@ -71,7 +71,6 @@ class Player extends Thread{
 
                         //quit packet
                 }else if(parts[0].equals("05")){
-                    System.out.println("player wants to quit");
                     output.println("02,"+false);
                     opponent.sendDis();
                     interrupt();

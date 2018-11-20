@@ -33,11 +33,15 @@ public class Board {
 
     public void movePieceFromServer(int x, int y, int newX, int newY){
 
+        turn.setValue(true);
+
         Piece p = pieces[x][y];
 
-        //new Thread(()->
-                new PieceAnimator(p,pieces[newX][newY],newX,newY).start();
-        //).start();
+        Piece take = pieces[newX][newY];
+
+        new Thread(()->
+                new PieceAnimator(p,take,newX,newY).start()
+        ).start();
 
         movePiece(p,newX,newY);
 
@@ -46,7 +50,12 @@ public class Board {
 
     public void movePieceFromClient(Piece piece, int x, int y){
 
-        new PieceAnimator(piece,pieces[x][y],x,y).start();
+        turn.setValue(false);
+
+        Piece take = pieces[x][y];
+        new Thread(()->
+            new PieceAnimator(piece,take,x,y).start()
+        ).start();
 
         Client.getInstance().sendMove(piece.getX(),piece.getY(),x,y);
 
@@ -69,8 +78,6 @@ public class Board {
         piece.setMoved();
         lastMoved = piece;
 
-        //switch whos turn it is
-        turn.setValue(!turn.get());
 
     }
 

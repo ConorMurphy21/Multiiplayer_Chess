@@ -153,10 +153,6 @@ public abstract class HighlighterBase implements Highlighter {
     public boolean canAttack(Piece p, Vec agr) {
         return canAttack(p,agr.getX(),agr.getY());
     }
-    @Override
-    public boolean canAttack(Piece p, Piece agr) {
-        return canAttack(p,agr.getX(),agr.getY());
-    }
 
     //this m
     @Override
@@ -262,6 +258,9 @@ public abstract class HighlighterBase implements Highlighter {
         return finalMoves;
     }
 
+    Highlight highlight(int x, int y, Piece p){
+        return new Highlight(x,y,p);
+    }
 
     final public void highlight(Piece p) {
 
@@ -270,7 +269,7 @@ public abstract class HighlighterBase implements Highlighter {
         List<Vec> moves = highlights(p);
         //adds the list of final moves to the highlightGroup
         for (Vec finalMove : moves) {
-            Highlight hl = new Highlight(finalMove.getX(), finalMove.getY(), p);
+            Highlight hl = highlight(finalMove.getX(), finalMove.getY(), p);
             group.getChildren().add(hl);
         }
 
