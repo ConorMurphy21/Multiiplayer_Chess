@@ -2,7 +2,9 @@ package pieces;
 
 import board.Board;
 import highlighters.Highlighter;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import pieces.graphics.PieceGroup;
 import pieces.graphics.PieceNode;
@@ -12,7 +14,7 @@ import utils.SizeUtil;
 public abstract class PieceBase implements Piece {
 
 
-    private IntegerProperty xProperty,yProperty;
+    private DoubleProperty xProperty,yProperty;
 
     private boolean isWhite, hasMoved;
 
@@ -24,8 +26,8 @@ public abstract class PieceBase implements Piece {
     PieceNode node;
 
     PieceBase(boolean isWhite, int x, int y){
-        xProperty = new SimpleIntegerProperty(x);
-        yProperty = new SimpleIntegerProperty(y);
+        xProperty = new SimpleDoubleProperty(x);
+        yProperty = new SimpleDoubleProperty(y);
         this.isWhite = isWhite;
         hasMoved = false;
     }
@@ -37,7 +39,7 @@ public abstract class PieceBase implements Piece {
         group.getChildren().add(node);
     }
     private void attachToBoard(){
-        Board.getInstance().addToBoard(this,xProperty.get(),yProperty.get());
+        Board.getInstance().addToBoard(this,getX(),getY());
     }
     public void ini(){
         if(sizeUtil == null)sizeUtil = SizeUtil.getInstance();
@@ -52,19 +54,19 @@ public abstract class PieceBase implements Piece {
     }
 
 
-    public void movePiece(int x, int y){
+    public void movePiece(double x, double y){
         xProperty.set(x);
         yProperty.set(y);
     }
 
     @Override
     public int getX() {
-        return xProperty.get();
+        return (int)xProperty.get();
     }
 
     @Override
     public int getY() {
-        return yProperty.get();
+        return (int)yProperty.get();
     }
 
     public PieceNode getNode(){

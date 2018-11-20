@@ -15,7 +15,7 @@ public interface Piece {
 
     PieceNode getNode();
 
-    void movePiece(int x, int y);
+    void movePiece(double x, double y);
 
     int getX();
 

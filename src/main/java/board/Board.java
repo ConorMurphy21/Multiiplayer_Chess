@@ -6,6 +6,7 @@ import networking.Client;
 import pieces.King;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
+import utils.PieceAnimator;
 import utils.Vec;
 
 public class Board {
@@ -32,12 +33,20 @@ public class Board {
 
     public void movePieceFromServer(int x, int y, int newX, int newY){
 
-        movePiece(pieces[x][y],newX,newY);
+        Piece p = pieces[x][y];
+
+        //new Thread(()->
+                new PieceAnimator(p,pieces[newX][newY],newX,newY).start();
+        //).start();
+
+        movePiece(p,newX,newY);
 
         Check.getInstance().checkCheck();
     }
 
     public void movePieceFromClient(Piece piece, int x, int y){
+
+        new PieceAnimator(piece,pieces[x][y],x,y).start();
 
         Client.getInstance().sendMove(piece.getX(),piece.getY(),x,y);
 
@@ -45,16 +54,12 @@ public class Board {
 
     }
 
-    public void movePiece(Piece piece, int x, int y){
+    private void movePiece(Piece piece, int x, int y){
 
         lastMovedLocation = new Vec(piece.getX(),piece.getY());
 
-        Piece p = pieces[x][y];
-        if(p != null)
-            PieceGroup.getInstance().getChildren().remove(p.getNode());
-
         pieces[piece.getX()][piece.getY()] = null;
-        piece.movePiece(x,y);
+        //piece.movePiece(x,y);
         pieces[x][y] = piece;
         if(piece instanceof King){
             if(piece.isWhite())w_king = new Vec(x,y);

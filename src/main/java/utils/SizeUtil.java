@@ -3,6 +3,7 @@ package utils;
 import highlighters.graphics.Highlight;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -60,7 +61,7 @@ public class SizeUtil {
         node.setY(0);
         node.setFill(Color.rgb(0,0,0,0));
     }
-    public void sizePieceNode(PieceNode node, IntegerProperty x, IntegerProperty y){
+    public void sizePieceNode(PieceNode node, DoubleProperty x, DoubleProperty y){
         node.fitWidthProperty().bind(size);
         node.fitHeightProperty().bind(size);
         if(flipped){

@@ -30,9 +30,13 @@ public class Client extends Thread {
     }
 
     public synchronized void sendMove(int x, int y, int newX, int newY){
-        if(out == null) System.out.println("It's the output");
         String send = "04,"+x+","+y+","+newX+","+newY;
         out.println(send);
+    }
+
+    public synchronized  void sendQuit(){
+       String send = "05";
+       out.println(send);
     }
 
 
@@ -45,7 +49,8 @@ public class Client extends Thread {
             System.out.println("waiting for opponent...");
 
 
-            while(true){
+            while(!isInterrupted()){
+
                 String message = in.readLine();
                 String[] parts = message.split(",");
 
@@ -70,14 +75,21 @@ public class Client extends Thread {
 
                     //disconnect packet
                 }else if(parts[0].equals("02")){
+                    if(Boolean.parseBoolean(parts[1])){
 
+                        //say you win the game cuz the other player disconnected
 
+                        System.out.println("other player is disconnecting");
+                        interrupt();
+                    }else{
+                        System.out.println("this player is disconnecting");
+                        interrupt();
+                    }
                 }
 
             }
 
             //will have a stop condition eventually
-            //stopConnection();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -89,6 +101,7 @@ public class Client extends Thread {
             }
         }
     }
+
 
     public synchronized PrintWriter getOut(){
         return out;

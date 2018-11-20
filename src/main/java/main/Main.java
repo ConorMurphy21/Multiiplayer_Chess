@@ -29,10 +29,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
 
         stage = primaryStage;
+        stage.setTitle("Chess");
 
         Client client =  Client.getInstance();
         client.start();
 
+        stage.setOnCloseRequest(e->client.sendQuit());
 
 
     }
@@ -60,8 +62,9 @@ public class Main extends Application {
         //add to root, set scene and show
         root.setCenter(stack);
         stage.setScene(scene);
-        stage.show();
 
+
+        stage.show();
 
     }
 

@@ -7,15 +7,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Player extends Thread{
+class Player extends Thread{
 
-    Player opponent;
-    Socket socket;
-    BufferedReader input;
-    PrintWriter output;
-    boolean isWhite;
+    private Player opponent;
+    private Socket socket;
+    private BufferedReader input;
+    private PrintWriter output;
+    private boolean isWhite;
 
-    public Player(Socket socket, boolean isWhite) {
+    Player(Socket socket, boolean isWhite) {
 
         this.isWhite = isWhite;
         this.socket = socket;
@@ -30,7 +30,7 @@ public class Player extends Thread{
         }
     }
 
-    public void setOpponent(Player opponent) {
+    void setOpponent(Player opponent) {
         this.opponent = opponent;
     }
 
@@ -46,6 +46,10 @@ public class Player extends Thread{
         output.println("01,"+points[0]+","+points[1]+","+points[2]+","+points[3]);
     }
 
+    private synchronized void sendDis(){
+        output.println("02"+true);
+        interrupt();
+    }
 
     public void run() {
         try {
@@ -53,9 +57,8 @@ public class Player extends Thread{
             output.println("00,"+isWhite);
 
             // Repeatedly get commands from the client and process them.
-            while (true) {
+            while (!Thread.interrupted()) {
                 String message = input.readLine();
-                System.out.println(message);
                 String[] parts = message.split(",");
 
                     //move packet
@@ -65,10 +68,13 @@ public class Player extends Thread{
                         nums[i] = Integer.parseInt(parts[i+1]);
                     }
                     opponent.sendMove(nums);
+
                         //quit packet
-                }else if(message.equals("05")){
-
-
+                }else if(parts[0].equals("05")){
+                    System.out.println("player wants to quit");
+                    output.println("02,"+false);
+                    opponent.sendDis();
+                    interrupt();
                 }
             }
         } catch (IOException e) {
