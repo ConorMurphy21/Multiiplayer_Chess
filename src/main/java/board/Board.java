@@ -7,6 +7,7 @@ import pieces.King;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
 import utils.PieceAnimator;
+import utils.TakeAnimator;
 import utils.Vec;
 
 public class Board {
@@ -37,11 +38,18 @@ public class Board {
 
         Piece p = pieces[x][y];
 
-        Piece take = pieces[newX][newY];
 
         new Thread(()->
-                new PieceAnimator(p,take,newX,newY).start()
+                new PieceAnimator(p,newX,newY).start()
         ).start();
+
+        Piece take = pieces[newX][newY];
+
+        if(take != null){
+            new Thread(()->
+                    new TakeAnimator(take).start()
+            ).start();
+        }
 
         movePiece(p,newX,newY);
 
@@ -52,10 +60,17 @@ public class Board {
 
         turn.setValue(false);
 
-        Piece take = pieces[x][y];
         new Thread(()->
-            new PieceAnimator(piece,take,x,y).start()
+            new PieceAnimator(piece,x,y).start()
         ).start();
+
+        Piece take = pieces[x][y];
+
+        if(take != null){
+            new Thread(()->
+                new TakeAnimator(take).start()
+            ).start();
+        }
 
         Client.getInstance().sendMove(piece.getX(),piece.getY(),x,y);
 

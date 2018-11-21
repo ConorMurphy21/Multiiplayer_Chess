@@ -90,7 +90,6 @@ public class Main extends Application {
 
         pieceGroup.initializeGame();
 
-
         stack.getChildren().add(boardGroup);
         stack.getChildren().add(highlightGroup);
         stack.getChildren().add(pieceGroup);

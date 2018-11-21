@@ -14,9 +14,9 @@ public class PieceAnimator extends AnimationTimer {
 
     private double xDif,yDif,startX,startY,endX,endY;
 
-    private Piece piece,take;
+    private Piece piece;
 
-    public PieceAnimator(Piece piece, Piece take, int endX, int endY){
+    public PieceAnimator(Piece piece, int endX, int endY){
         this.piece = piece;
         this.startX = piece.getX();
         this.startY = piece.getY();
@@ -24,7 +24,6 @@ public class PieceAnimator extends AnimationTimer {
         this.endY = endY;
         this.xDif = endX - startX;
         this.yDif = endY - startY;
-        this.take = take;
         startTime = System.nanoTime();
         Platform.runLater(()->piece.getNode().toFront());
 
@@ -37,7 +36,6 @@ public class PieceAnimator extends AnimationTimer {
 
         if(percent >= 1){
             Platform.runLater(()->piece.movePiece(endX,endY));
-            if(take != null)Platform.runLater(()->PieceGroup.getInstance().getChildren().remove(take.getNode()));
             stop();
             return;
         }
@@ -46,8 +44,6 @@ public class PieceAnimator extends AnimationTimer {
         double y = startY + (yDif * percent);
 
         Platform.runLater(()->piece.movePiece(x,y));
-
-        if(take != null)Platform.runLater(()->take.getNode().setOpacity(1-percent));
 
     }
 }
