@@ -34,12 +34,15 @@ public class Client extends Thread {
         out.println(send);
     }
 
-    public synchronized  void sendQuit(){
+    public synchronized void sendQuit(){
        String send = "05";
        out.println(send);
     }
 
-
+    public synchronized void sendTake(int x, int y){
+        String send = "06,"+x+","+y;
+        out.println(send);
+    }
 
     //all of the recieving happens from here
     @Override
@@ -85,6 +88,10 @@ public class Client extends Thread {
                         System.out.println("this player is disconnecting");
                         interrupt();
                     }
+                    //take packet
+                }else if(parts[0].equals("03")){
+                    Platform.runLater(()->Board.getInstance()
+                            .takeFromServer(Integer.parseInt(parts[1]),Integer.parseInt(parts[2])));
                 }
 
             }

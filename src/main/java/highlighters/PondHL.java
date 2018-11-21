@@ -1,8 +1,10 @@
 package highlighters;
 
+import board.Board;
+import highlighters.graphics.Highlight;
+import highlighters.graphics.SlideHighlight;
 import pieces.Piece;
 import utils.Vec;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,13 @@ public class PondHL extends HighlighterBase {
         return (p.isWhite()) ? -1 : 1;
     }
 
+    Highlight highlight(Piece p, int x, int y){
+        if(Math.abs(p.getX()-x) == 1 && pieces[x][y] == null){
+            return new SlideHighlight(p,x,y,pieces[x][y-dir(p)]);
+        }
+        return new Highlight(p,x,y);
+    }
+
     private List<Vec> normalMoves(Piece p, int dir){
 
         List<Vec> list = new ArrayList<>();
@@ -64,6 +73,20 @@ public class PondHL extends HighlighterBase {
                     pieces[p.getX() - 1][p.getY() + dir].isWhite() != p.isWhite())
                 list.add(new Vec(p.getX() - 1, p.getY() + dir));
         }
+
+        Board board = Board.getInstance();
+        Piece lm = board.getLastMoved();
+        Vec lastLoc = board.getLastMovedLocation();
+        if(lm == null)return list;
+
+        if((lm.highlighter() instanceof PondHL)){
+            if(lm.getY() == p.getY() && Math.abs(lm.getX()-p.getX())==1){
+                if(Math.abs(lastLoc.getY()-lm.getY()) == 2){
+                    list.add(new Vec(lm.getX(),lm.getY()+dir));
+                }
+            }
+        }
+
         return list;
     }
 

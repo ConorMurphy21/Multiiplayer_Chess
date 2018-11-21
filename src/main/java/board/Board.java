@@ -32,19 +32,38 @@ public class Board {
     }
 
 
+    public void takeFromClient(Piece take){
+        Client.getInstance().sendTake(take.getX(),take.getY());
+        take(take.getX(),take.getY());
+    }
+    public void takeFromServer(int x, int y){
+        take(x,y);
+    }
+
+    private void take(int x, int y){
+
+        Piece take = pieces[x][y];
+        new Thread(()->
+                new TakeAnimator(take).start()
+        ).start();
+        Board.getInstance().getPieces()[take.getX()][take.getY()] = null;
+    }
+
     public void movePieceFromServer(int x, int y, int newX, int newY){
 
+        //from the server it means it is now this players turn
         turn.setValue(true);
 
+        //set p outside of new thread
         Piece p = pieces[x][y];
 
-
+        //run in new thread so that moves at the same time (castling) can occur
         new Thread(()->
                 new PieceAnimator(p,newX,newY).start()
         ).start();
 
+        //set take outside of new thread
         Piece take = pieces[newX][newY];
-
         if(take != null){
             new Thread(()->
                     new TakeAnimator(take).start()
@@ -75,7 +94,6 @@ public class Board {
         Client.getInstance().sendMove(piece.getX(),piece.getY(),x,y);
 
         movePiece(piece,x,y);
-
     }
 
     private void movePiece(Piece piece, int x, int y){
@@ -92,8 +110,6 @@ public class Board {
 
         piece.setMoved();
         lastMoved = piece;
-
-
     }
 
 
@@ -109,9 +125,9 @@ public class Board {
         return w_king;
     }
 
-    Piece getLastMoved() {
+    public Piece getLastMoved() {
         return lastMoved;
     }
 
-    Vec getLastMovedLocation(){return lastMovedLocation; }
+    public Vec getLastMovedLocation(){return lastMovedLocation; }
 }

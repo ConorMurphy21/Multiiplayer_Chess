@@ -71,12 +71,12 @@ public class KingHL extends HighlighterBase {
     Highlight highlight(int x, int y, Piece p){
         if(Math.abs(p.getX()-x) > 1){
             if(p.getX() > x){
-                return new CastleHighlight(x,y,p,x+1,y,pieces[0][y]);
+                return new CastleHighlight(p,x,y,pieces[0][y],x+1,y);
             }else{
-                return new CastleHighlight(x,y,p,x-1,y,pieces[7][y]);
+                return new CastleHighlight(p,x,y,pieces[7][y],x-1,y);
             }
         }else{
-            return new Highlight(x,y,p);
+            return new Highlight(p,x,y);
         }
     }
 

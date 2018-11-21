@@ -12,8 +12,5 @@ class Pond extends PieceBase {
             node = new PieceNode("Chess_pdt60.png");
         }
         highlighter = PondHL.getInstance();
-
-
     }
-
 }

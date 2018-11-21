@@ -51,6 +51,10 @@ class Player extends Thread{
         interrupt();
     }
 
+    private synchronized void sendTake(String args){
+        output.println("03,"+args);
+    }
+
     public void run() {
         try {
 
@@ -74,6 +78,8 @@ class Player extends Thread{
                     output.println("02,"+false);
                     opponent.sendDis();
                     interrupt();
+                }else if(parts[0].equals("06")){
+                    opponent.sendTake(parts[1] +","+ parts[2]);
                 }
             }
         } catch (IOException e) {

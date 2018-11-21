@@ -17,7 +17,7 @@ public class Highlight extends Rectangle {
 
     private static final Color select = Color.rgb(0,0,140,0.6);
 
-    public Highlight(int x, int y, Piece piece){
+    public Highlight(Piece piece,int x, int y){
         if(pieces == null)pieces = Board.getInstance().getPieces();
         if(su == null)su = SizeUtil.getInstance();
         su.sizeHighlight(this,x,y);
