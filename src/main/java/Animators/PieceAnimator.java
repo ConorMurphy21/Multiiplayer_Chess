@@ -1,22 +1,19 @@
-package utils;
+package Animators;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
 
-public class PieceAnimator extends AnimationTimer {
+public class PieceAnimator extends Animator {
 
-                            //how much time the animation will take
-    private static final double ENDTIME = 550000000;
 
-    private long startTime;
+    double xDif,yDif,startX,startY,endX,endY;
 
-    private double xDif,yDif,startX,startY,endX,endY;
-
-    private Piece piece;
+    Piece piece;
 
     public PieceAnimator(Piece piece, int endX, int endY){
+        super();
         this.piece = piece;
         this.startX = piece.getX();
         this.startY = piece.getY();
@@ -24,26 +21,21 @@ public class PieceAnimator extends AnimationTimer {
         this.endY = endY;
         this.xDif = endX - startX;
         this.yDif = endY - startY;
-        startTime = System.nanoTime();
         Platform.runLater(()->piece.getNode().toFront());
+    }
+
+
+    @Override
+    void tick(double percent){
+        double x = startX + (xDif * percent);
+        double y = startY + (yDif * percent);
+        Platform.runLater(()->piece.movePiece(x,y));
 
     }
 
     @Override
-    public void handle(long l) {
-
-        double percent = (l - startTime)/ENDTIME;
-
-        if(percent >= 1){
-            Platform.runLater(()->piece.movePiece(endX,endY));
-            stop();
-            return;
-        }
-
-        double x = startX + (xDif * percent);
-        double y = startY + (yDif * percent);
-
-        Platform.runLater(()->piece.movePiece(x,y));
-
+    void onEnd(){
+        Platform.runLater(()->piece.movePiece(endX,endY));
+        stop();
     }
 }

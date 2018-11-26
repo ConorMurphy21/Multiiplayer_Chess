@@ -2,6 +2,7 @@ package highlighters;
 
 import board.Board;
 import highlighters.graphics.Highlight;
+import highlighters.graphics.PromoteHighlight;
 import highlighters.graphics.SlideHighlight;
 import pieces.Piece;
 import utils.Vec;
@@ -46,6 +47,9 @@ public class PondHL extends HighlighterBase {
     Highlight highlight(Piece p, int x, int y){
         if(Math.abs(p.getX()-x) == 1 && pieces[x][y] == null){
             return new SlideHighlight(p,x,y,pieces[x][y-dir(p)]);
+        }
+        if(y + dir(p) > 8 || y + dir(p) < 0){
+            return new PromoteHighlight(p,x,y);
         }
         return new Highlight(p,x,y);
     }

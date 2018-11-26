@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import networking.Client;
 import pieces.graphics.PieceGroup;
+import stackRoots.StackRoot;
 import utils.SizeUtil;
 
 public class Main extends Application {
@@ -93,6 +94,8 @@ public class Main extends Application {
         stack.getChildren().add(boardGroup);
         stack.getChildren().add(highlightGroup);
         stack.getChildren().add(pieceGroup);
+
+        StackRoot.setStack(stack);
 
         stage.setScene(scene);
         stage.show();

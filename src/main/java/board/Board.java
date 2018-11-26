@@ -1,13 +1,13 @@
 package board;
 
+import Animators.PromoteAnimator;
 import javafx.beans.property.BooleanProperty;
 import main.Main;
 import networking.Client;
 import pieces.King;
 import pieces.Piece;
-import pieces.graphics.PieceGroup;
-import utils.PieceAnimator;
-import utils.TakeAnimator;
+import Animators.PieceAnimator;
+import Animators.TakeAnimator;
 import utils.Vec;
 
 public class Board {
@@ -24,13 +24,11 @@ public class Board {
 
     private Piece[][] pieces = new Piece[8][8];
 
-    private Board() {
-    }
+    private Board(){}
 
     public void addToBoard(Piece piece, int x, int y){
         pieces[x][y] = piece;
     }
-
 
     public void takeFromClient(Piece take){
         Client.getInstance().sendTake(take.getX(),take.getY());
@@ -41,7 +39,6 @@ public class Board {
     }
 
     private void take(int x, int y){
-
         Piece take = pieces[x][y];
         new Thread(()->
                 new TakeAnimator(take).start()
@@ -101,7 +98,7 @@ public class Board {
         lastMovedLocation = new Vec(piece.getX(),piece.getY());
 
         pieces[piece.getX()][piece.getY()] = null;
-        //piece.movePiece(x,y);
+
         pieces[x][y] = piece;
         if(piece instanceof King){
             if(piece.isWhite())w_king = new Vec(x,y);
@@ -112,6 +109,36 @@ public class Board {
         lastMoved = piece;
     }
 
+    public void promoteFromClient(Piece p, Piece newPiece, int x, int y){
+        turn.setValue(false);
+        promote(p,newPiece,x,y);
+    }
+
+    public void promoteFromServer(Piece p, Piece newPiece,int x, int y){
+        //send it
+        promote(p,newPiece,x,y);
+    }
+
+    //note does not just promote, also moves as the turn does not change until finished promotion
+    private void promote(Piece p, Piece newPiece, int x, int y){
+
+
+        new Thread(()->
+            new PromoteAnimator(p,newPiece,x,y).start()
+        ).start();
+
+        Piece take;
+        if((take = pieces[x][y]) != null){
+            new Thread(()->
+                    new TakeAnimator(take).start()
+            ).start();
+        }
+
+        newPiece.getNode().setOpacity(0);
+        newPiece.ini();
+
+
+    }
 
     public Piece[][] getPieces(){
         return pieces;

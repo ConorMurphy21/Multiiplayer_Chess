@@ -3,6 +3,21 @@ package pieces;
 public class PieceFactory {
 
 
+    public static Piece create(int x, int y, char t, boolean isWhite){
+        switch(t){
+            case 'b':
+                return new Bishop(isWhite,x,y);
+            case 'n':
+                return new Knight(isWhite,x,y);
+            case 'q':
+                return new Queen(isWhite,x,y);
+            case 'r':
+                return new Rook(isWhite, x, y);
+                default:
+                    return null;
+        }
+    }
+
     public static Piece create(int x, int y){
        switch(y){
            case 0:
