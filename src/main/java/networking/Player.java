@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import static utils.StringJoin.joinWithCommas;
+
 class Player extends Thread{
 
     private Player opponent;
@@ -41,45 +43,83 @@ class Player extends Thread{
         return true;
     }
 
-                //this is called by the opponent
+    //sends a move packet to client by the protocol in client
     private synchronized void sendMove(int[] points){
-        output.println("01,"+points[0]+","+points[1]+","+points[2]+","+points[3]);
+        String send = joinWithCommas("01",points[0],points[1],points[2],points[3]);
+        output.println(send);
     }
 
-    private synchronized void sendDis(){
-        output.println("02,"+true);
-        interrupt();
+    //sends disconnect packet to client by the protocol in client
+    private synchronized void sendDis(boolean otherPlayersClient){
+        String send = joinWithCommas("02",otherPlayersClient);
+        output.println(send);
     }
 
+    //sends valid take packet to client by the protocol in client
     private synchronized void sendTake(String args){
-        output.println("03,"+args);
+        String send = joinWithCommas("03",args);
+        output.println(send);
     }
 
+    //sends valid ini packet to client by the protocol in client
+    private synchronized void sendIniPacket(){
+        String send = joinWithCommas("00",isWhite);
+        output.println(send);
+    }
+
+    /***Protocol for how server handles packets from client***/
     public void run() {
         try {
 
-            output.println("00,"+isWhite);
+            //if the player has been started, then both players are ready to play,
+            //and ini packet can be sent
+            sendIniPacket();
 
             // Repeatedly get commands from the client and process them.
             while (!Thread.interrupted()) {
                 String message = input.readLine();
                 String[] parts = message.split(",");
 
-                    //move packet
-                if(parts[0].equals("04")){
-                    int[] nums = new int[4];
-                    for(int i = 0; i < 4; i++){
-                        nums[i] = Integer.parseInt(parts[i+1]);
-                    }
-                    opponent.sendMove(nums);
+                switch (parts[0]) {
+                    /*
+                     * move packet - the client would like to move their player
+                     * param 1: x1 (int) x pos of piece to be moved
+                     * param 2: y1 (int) y pos of piece to be moved
+                     * param 3: x2 (int) x pos of where piece will move to
+                     * param 4: y2 (int) y pos of where piece will move to
+                     * action:
+                     * send a move packet to the opponent so the opponent will know our client has moved
+                     */
+                    case "04":
+                        int[] nums = new int[4];
+                        for (int i = 0; i < 4; i++) {
+                            nums[i] = Integer.parseInt(parts[i + 1]);
+                        }
+                        opponent.sendMove(nums);
+                        break;
 
+                        /*
+                         * quit packet - the client would like to quit the game
+                         * action:
+                         * send disconnect packet to both clients
+                         */
+                    case "05":
                         //quit packet
-                }else if(parts[0].equals("05")){
-                    output.println("02,"+false);
-                    opponent.sendDis();
-                    interrupt();
-                }else if(parts[0].equals("06")){
-                    opponent.sendTake(parts[1] +","+ parts[2]);
+                        opponent.sendDis(true);
+                        sendDis(false);
+                        interrupt();
+                        break;
+
+                        /*
+                         * take packet - the client would like to take an opponents piece
+                         * param 1: x (int) - x pos of piece to be taken
+                         * param 2: y (int) - y pos of piece to be taken
+                         * action:
+                         * send take packet to opponent so the opponent know their piece has been taken
+                         */
+                    case "06":
+                        opponent.sendTake(parts[1] + "," + parts[2]);
+                        break;
                 }
             }
         } catch (IOException e) {

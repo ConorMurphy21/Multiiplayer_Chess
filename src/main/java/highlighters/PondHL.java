@@ -48,7 +48,7 @@ public class PondHL extends HighlighterBase {
         if(Math.abs(p.getX()-x) == 1 && pieces[x][y] == null){
             return new SlideHighlight(p,x,y,pieces[x][y-dir(p)]);
         }
-        if(y + dir(p) > 8 || y + dir(p) < 0){
+        if(y == 7 || y == 0){
             return new PromoteHighlight(p,x,y);
         }
         return new Highlight(p,x,y);

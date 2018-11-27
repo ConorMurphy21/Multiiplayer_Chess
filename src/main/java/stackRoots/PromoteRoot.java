@@ -18,7 +18,7 @@ public class PromoteRoot extends StackRoot{
         setCenter(hbox);
         setStyle("-fx-background-color: #00EFFF99");
         String dis = su.isFlipped() ? "d" : "l";
-        char[] pNames = {'k', 'q', 'b', 'r'};
+        char[] pNames = {'n', 'q', 'b', 'r'};
 
         for(int i = 0; i < 4; i++){
             PieceNode p = new PieceNode("Chess_"+pNames[i]+dis+"t60.png");

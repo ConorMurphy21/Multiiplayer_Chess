@@ -1,5 +1,6 @@
 package Animators;
 
+import board.Check;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import pieces.Piece;
@@ -36,6 +37,7 @@ public class PieceAnimator extends Animator {
     @Override
     void onEnd(){
         Platform.runLater(()->piece.movePiece(endX,endY));
+        Platform.runLater(()-> Check.getInstance().checkCheck());
         stop();
     }
 }

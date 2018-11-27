@@ -30,7 +30,7 @@ public class Check {
         board = Board.getInstance();
     }
 
-    void checkCheck(){
+    public void checkCheck(){
 
         //clear checkers from last check
         checkers.clear();
@@ -38,6 +38,7 @@ public class Check {
         Piece p = board.getLastMoved();
                     //check already equals false so don't need to reset it
         if(p == null)return;
+
         //get opposite king of just moved
         Vec king = (p.isWhite()) ? Board.getInstance().getB_king() : Board.getInstance().getW_king();
                                                 //make an object that will iterate from the king to the piece

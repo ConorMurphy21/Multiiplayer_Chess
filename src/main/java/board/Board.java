@@ -69,7 +69,7 @@ public class Board {
 
         movePiece(p,newX,newY);
 
-        Check.getInstance().checkCheck();
+        //Check.getInstance().checkCheck();
     }
 
     public void movePieceFromClient(Piece piece, int x, int y){
@@ -136,7 +136,6 @@ public class Board {
 
         newPiece.getNode().setOpacity(0);
         newPiece.ini();
-
 
     }
 
