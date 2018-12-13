@@ -74,8 +74,8 @@ public abstract class HighlighterBase implements Highlighter {
                             moves.add(new Vec(x, y));
                             return moves;
 
-                        }else if(p.highlighter() instanceof PondHL){
-                            return PondHL.getInstance().findAggressorSpecial(p,piece,straight,obj.getSlope());
+                        }else if(p.highlighter() instanceof PawnHL){
+                            return PawnHL.getInstance().findAggressorSpecial(p,piece,straight,obj.getSlope());
                         }
 
                         //returns empty list because the piece at this point cannot move
@@ -248,8 +248,10 @@ public abstract class HighlighterBase implements Highlighter {
         if (aggressorMoves != null && protectKing != null) {
             return new ArrayList<>();
         } else if (aggressorMoves != null) {
+            System.out.println("we are protecting");
             finalMoves = aggressorMoves;
         } else if (protectKing != null) {
+            System.out.println("It is check");
             finalMoves = protectKing;
         } else {
             finalMoves = regularHighlight(p);
@@ -275,4 +277,5 @@ public abstract class HighlighterBase implements Highlighter {
         }
 
     }
+
 }

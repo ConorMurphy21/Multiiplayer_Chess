@@ -14,4 +14,9 @@ public class Knight extends PieceBase {
         }
         highlighter = KnightHL.getInstance();
     }
+
+    @Override
+    public char getChar() {
+        return 'n';
+    }
 }

@@ -43,6 +43,7 @@ public class Check {
         Vec king = (p.isWhite()) ? Board.getInstance().getB_king() : Board.getInstance().getW_king();
                                                 //make an object that will iterate from the king to the piece
 
+
         check = p.highlighter().canAttack(p,king);
 
         //add piece to the checkers
@@ -85,6 +86,7 @@ public class Check {
 
         if(check){
 
+            System.out.println("it is a check rn");
             boolean checkMate = isCheckMate(p);
 
         }

@@ -13,4 +13,9 @@ class Rook extends PieceBase {
         }
         highlighter = StraightHL.getInstance();
     }
+
+    @Override
+    public char getChar() {
+        return 'r';
+    }
 }

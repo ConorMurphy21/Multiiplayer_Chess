@@ -124,7 +124,7 @@ public class KingHL extends HighlighterBase {
 
                 if(isMatchHighlighter(piece.highlighter(),straight)) return true;
 
-                return (piece.highlighter() instanceof PondHL && piece.highlighter().canAttack(piece,x,y));
+                return (piece.highlighter() instanceof PawnHL && piece.highlighter().canAttack(piece,x,y));
             };
 
             if(obj.iterate(br,ret))return false;

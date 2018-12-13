@@ -2,6 +2,7 @@ package Animators;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
 
@@ -9,8 +10,8 @@ public class TakeAnimator extends Animator {
 
     private Piece p;
 
-    public TakeAnimator(Piece take){
-        super();
+    public TakeAnimator(Piece take, BooleanProperty turn, boolean set){
+        super(turn,set);
         p = take;
     }
 

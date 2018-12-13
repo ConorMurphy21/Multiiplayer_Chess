@@ -3,6 +3,7 @@ package Animators;
 import board.Check;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
 
@@ -13,8 +14,8 @@ public class PieceAnimator extends Animator {
 
     Piece piece;
 
-    public PieceAnimator(Piece piece, int endX, int endY){
-        super();
+    public PieceAnimator(Piece piece, int endX, int endY, BooleanProperty turn, boolean set){
+        super(turn, set);
         this.piece = piece;
         this.startX = piece.getX();
         this.startY = piece.getY();
@@ -36,6 +37,7 @@ public class PieceAnimator extends Animator {
 
     @Override
     void onEnd(){
+        super.onEnd();
         Platform.runLater(()->piece.movePiece(endX,endY));
         Platform.runLater(()-> Check.getInstance().checkCheck());
         stop();

@@ -13,4 +13,9 @@ class Bishop extends PieceBase {
         }
         highlighter = DiagonalHL.getInstance();
     }
+
+    @Override
+    public char getChar() {
+        return 'b';
+    }
 }

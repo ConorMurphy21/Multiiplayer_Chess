@@ -145,7 +145,14 @@ public class Client extends Thread {
                      * promote packet - receives info that an opponents piece should be promoted
                      */
                     case "04":
-
+                        //parse values of what piece is moving where
+                        int[] numbs = new int[4];
+                        for (int i = 0; i < 4; i++) {
+                            numbs[i] = Integer.parseInt(parts[i + 1]);
+                        }
+                        char c = parts[5].charAt(0);
+                        //move that piece
+                        Platform.runLater(() -> Board.getInstance().promoteFromServer(numbs[0], numbs[1], numbs[2], numbs[3],c,isWhite));
                         break;
                 }
 

@@ -22,4 +22,6 @@ public interface Piece {
     int getY();
 
     void ini();
+
+    char getChar();
 }

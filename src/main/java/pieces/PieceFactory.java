@@ -54,9 +54,9 @@ public class PieceFactory {
                }
 
            case 1:
-               return new Pond(false,x,y);
+               return new Pawn(false,x,y);
            case 6:
-               return new Pond(true,x,y);
+               return new Pawn(true,x,y);
 
                default:
                    return null;

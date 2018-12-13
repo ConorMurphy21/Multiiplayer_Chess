@@ -16,4 +16,9 @@ public class King extends PieceBase {
         highlighter = KingHL.getInstance();
 
     }
+
+    @Override
+    public char getChar() {
+        return 'k';
+    }
 }

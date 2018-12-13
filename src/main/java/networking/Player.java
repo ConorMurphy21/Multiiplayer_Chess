@@ -67,6 +67,11 @@ class Player extends Thread{
         output.println(send);
     }
 
+    private synchronized void sendPromote(String params){
+        String send = joinWithCommas("04",params);
+        output.println(send);
+    }
+
     /***Protocol for how server handles packets from client***/
     public void run() {
         try {
@@ -118,7 +123,11 @@ class Player extends Thread{
                          * send take packet to opponent so the opponent know their piece has been taken
                          */
                     case "06":
-                        opponent.sendTake(parts[1] + "," + parts[2]);
+                        opponent.sendTake(message.substring(3));
+                        break;
+
+                    case "07":
+                        opponent.sendPromote(message.substring(3));
                         break;
                 }
             }

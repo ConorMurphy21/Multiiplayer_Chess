@@ -14,4 +14,9 @@ class Queen extends PieceBase {
         }
         highlighter = QueenHL.getInstance();
     }
+
+    @Override
+    public char getChar() {
+        return 'q';
+    }
 }

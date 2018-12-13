@@ -1,6 +1,7 @@
 package Animators;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.BooleanProperty;
 
 public abstract class Animator extends AnimationTimer {
 
@@ -8,7 +9,13 @@ public abstract class Animator extends AnimationTimer {
 
     long startTime;
 
-    Animator(){
+    private BooleanProperty turn;
+
+    private boolean set;
+
+    Animator(BooleanProperty turn, boolean set){
+        this.turn = turn;
+        this.set = set;
         startTime = System.nanoTime();
     }
 
@@ -25,7 +32,9 @@ public abstract class Animator extends AnimationTimer {
          return (l - startTime)/ENDTIME;
     }
 
-    abstract void onEnd();
+    void onEnd(){
+        turn.setValue(set);
+    }
 
     abstract void tick(double percent);
 

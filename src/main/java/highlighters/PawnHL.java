@@ -9,14 +9,14 @@ import utils.Vec;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PondHL extends HighlighterBase {
-    private static PondHL ourInstance = new PondHL();
+public class PawnHL extends HighlighterBase {
+    private static PawnHL ourInstance = new PawnHL();
 
-    public static PondHL getInstance() {
+    public static PawnHL getInstance() {
         return ourInstance;
     }
 
-    private PondHL() {
+    private PawnHL() {
     }
 
     //ponds are wierd, and it's special logic for what moves it can make is here
@@ -83,7 +83,7 @@ public class PondHL extends HighlighterBase {
         Vec lastLoc = board.getLastMovedLocation();
         if(lm == null)return list;
 
-        if((lm.highlighter() instanceof PondHL)){
+        if((lm.highlighter() instanceof PawnHL)){
             if(lm.getY() == p.getY() && Math.abs(lm.getX()-p.getX())==1){
                 if(Math.abs(lastLoc.getY()-lm.getY()) == 2){
                     list.add(new Vec(lm.getX(),lm.getY()+dir));

@@ -8,6 +8,7 @@ import pieces.King;
 import pieces.Piece;
 import Animators.PieceAnimator;
 import Animators.TakeAnimator;
+import pieces.PieceFactory;
 import utils.Vec;
 
 public class Board {
@@ -22,6 +23,7 @@ public class Board {
     private Vec lastMovedLocation;
     private BooleanProperty turn = Main.getThisTurn();
 
+    private Client client = Client.getInstance();
     private Piece[][] pieces = new Piece[8][8];
 
     private Board(){}
@@ -31,45 +33,41 @@ public class Board {
     }
 
     public void takeFromClient(Piece take){
-        Client.getInstance().sendTake(take.getX(),take.getY());
-        take(take.getX(),take.getY());
+        turn.setValue(false);
+        client.sendTake(take.getX(),take.getY());
+        take(take.getX(),take.getY(),false);
     }
     public void takeFromServer(int x, int y){
-        take(x,y);
+        take(x,y,true);
     }
 
-    private void take(int x, int y){
+    private void take(int x, int y,boolean setTurn){
         Piece take = pieces[x][y];
         new Thread(()->
-                new TakeAnimator(take).start()
+                new TakeAnimator(take,turn,setTurn).start()
         ).start();
         Board.getInstance().getPieces()[take.getX()][take.getY()] = null;
     }
 
     public void movePieceFromServer(int x, int y, int newX, int newY){
-
-        //from the server it means it is now this players turn
-        turn.setValue(true);
-
         //set p outside of new thread
         Piece p = pieces[x][y];
 
         //run in new thread so that moves at the same time (castling) can occur
         new Thread(()->
-                new PieceAnimator(p,newX,newY).start()
+                new PieceAnimator(p,newX,newY,turn,true).start()
         ).start();
 
         //set take outside of new thread
         Piece take = pieces[newX][newY];
         if(take != null){
             new Thread(()->
-                    new TakeAnimator(take).start()
+                    new TakeAnimator(take,turn,true).start()
             ).start();
         }
 
         movePiece(p,newX,newY);
 
-        //Check.getInstance().checkCheck();
     }
 
     public void movePieceFromClient(Piece piece, int x, int y){
@@ -77,18 +75,18 @@ public class Board {
         turn.setValue(false);
 
         new Thread(()->
-            new PieceAnimator(piece,x,y).start()
+            new PieceAnimator(piece,x,y,turn,false).start()
         ).start();
 
         Piece take = pieces[x][y];
 
         if(take != null){
             new Thread(()->
-                new TakeAnimator(take).start()
+                new TakeAnimator(take,turn, false).start()
             ).start();
         }
 
-        Client.getInstance().sendMove(piece.getX(),piece.getY(),x,y);
+        client.sendMove(piece.getX(),piece.getY(),x,y);
 
         movePiece(piece,x,y);
     }
@@ -111,31 +109,39 @@ public class Board {
 
     public void promoteFromClient(Piece p, Piece newPiece, int x, int y){
         turn.setValue(false);
-        promote(p,newPiece,x,y);
+        promote(p,newPiece,x,y,false);
+        client.sendPromote(p.getX(),p.getY(),x,y,newPiece.getChar());
     }
 
-    public void promoteFromServer(Piece p, Piece newPiece,int x, int y){
-        //send it
-        promote(p,newPiece,x,y);
+    public void promoteFromServer(int x1, int y1, int x2, int y2, char c, boolean isWhite){
+        Piece p = pieces[x1][y1];
+        Piece newPiece = PieceFactory.create(x2,y2,c,!isWhite);
+        promote(p,newPiece,x2,y2,true);
     }
 
     //note does not just promote, also moves as the turn does not change until finished promotion
-    private void promote(Piece p, Piece newPiece, int x, int y){
+    private void promote(Piece p, Piece newPiece, int x, int y, boolean setTurn){
 
+        lastMovedLocation = new Vec(p.getX(),p.getY());
+
+        pieces[p.getX()][p.getY()] = null;
 
         new Thread(()->
-            new PromoteAnimator(p,newPiece,x,y).start()
+            new PromoteAnimator(p,newPiece,x,y,turn,setTurn).start()
         ).start();
 
         Piece take;
         if((take = pieces[x][y]) != null){
             new Thread(()->
-                    new TakeAnimator(take).start()
+                    new TakeAnimator(take,turn,setTurn).start()
             ).start();
         }
 
-        newPiece.getNode().setOpacity(0);
         newPiece.ini();
+        newPiece.getNode().setOpacity(0);
+
+        p.setMoved();
+        lastMoved = p;
 
     }
 
