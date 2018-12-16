@@ -56,4 +56,5 @@ public class MoveCache {
     public BooleanProperty getTurn(){
         return turn;
     }
+
 }

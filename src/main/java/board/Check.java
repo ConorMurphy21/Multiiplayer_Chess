@@ -1,5 +1,7 @@
 package board;
 
+import cache.Move;
+import cache.MoveCache;
 import highlighters.HighlighterBase;
 import pieces.Piece;
 
@@ -28,14 +30,21 @@ public class Check {
     private Check() {
         check = false;
         board = Board.getInstance();
+        MoveCache.getInstance().addListener(l -> {
+                    if(l.getAddedSize() == 1) {
+                        Move m = l.getAddedSubList().get(0);
+                        checkCheck(m);
+                    }
+                }
+        );
     }
 
-    public void checkCheck(){
+    public void checkCheck(Move m){
 
         //clear checkers from last check
         checkers.clear();
 
-        Piece p = board.getLastMoved();
+        Piece p = m.getPiece();
                     //check already equals false so don't need to reset it
         if(p == null)return;
 
@@ -49,7 +58,7 @@ public class Check {
         //add piece to the checkers
         if(check)checkers.add(p);
 
-        Vec place = board.getLastMovedLocation();
+        Vec place = m.getToVec();
         if(place == null)return;
 
 
@@ -59,9 +68,7 @@ public class Check {
         obj.iterateStartLoc();
         if(!obj.isNormalSlope())return;
 
-
         PieceBreak br = (x,y)->board.getPieces()[x][y] != null;
-
 
         PieceReturn<Piece> ret = (x,y)->{
             //if there is nothing along the line it is not a check
