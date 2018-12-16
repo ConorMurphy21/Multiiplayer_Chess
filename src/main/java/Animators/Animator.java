@@ -9,13 +9,8 @@ public abstract class Animator extends AnimationTimer {
 
     long startTime;
 
-    private BooleanProperty turn;
 
-    private boolean set;
-
-    Animator(BooleanProperty turn, boolean set){
-        this.turn = turn;
-        this.set = set;
+    Animator(){
         startTime = System.nanoTime();
     }
 
@@ -32,10 +27,9 @@ public abstract class Animator extends AnimationTimer {
          return (l - startTime)/ENDTIME;
     }
 
-    void onEnd(){
-        turn.setValue(set);
-    }
+    void onEnd(){}
 
     abstract void tick(double percent);
+
 
 }

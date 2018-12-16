@@ -14,8 +14,7 @@ public class PieceAnimator extends Animator {
 
     Piece piece;
 
-    public PieceAnimator(Piece piece, int endX, int endY, BooleanProperty turn, boolean set){
-        super(turn, set);
+    public PieceAnimator(Piece piece, int endX, int endY){
         this.piece = piece;
         this.startX = piece.getX();
         this.startY = piece.getY();
@@ -31,15 +30,16 @@ public class PieceAnimator extends Animator {
     void tick(double percent){
         double x = startX + (xDif * percent);
         double y = startY + (yDif * percent);
-        Platform.runLater(()->piece.movePiece(x,y));
-
+        Platform.runLater(()->piece.moveGraphicNode(x,y));
     }
 
-    @Override
     void onEnd(){
-        super.onEnd();
-        Platform.runLater(()->piece.movePiece(endX,endY));
-        Platform.runLater(()-> Check.getInstance().checkCheck());
         stop();
+    }
+
+    public static void startInNewThread(Piece p, int endX, int endY){
+        new Thread(()->
+            new PieceAnimator(p,endX,endY).start()
+        ).start();
     }
 }

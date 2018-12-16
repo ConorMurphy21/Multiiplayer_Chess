@@ -12,8 +12,8 @@ public class PromoteAnimator extends PieceAnimator {
 
     private boolean stageOne;
     //assumes this piece has already been set to opacity 0 and been initialized
-    public PromoteAnimator(Piece piece, Piece newPiece, int endX, int endY, BooleanProperty turn, boolean set){
-        super(piece,endX,endY,turn,set);
+    public PromoteAnimator(Piece piece, Piece newPiece, int endX, int endY){
+        super(piece,endX,endY);
         this.newPiece = newPiece;
         stageOne = true;
         Platform.runLater(()->piece.getNode().toFront());
@@ -32,15 +32,20 @@ public class PromoteAnimator extends PieceAnimator {
     @Override
     void onEnd() {
         if(stageOne){
-            Platform.runLater(()->piece.movePiece(endX,endY));
+            Platform.runLater(()->piece.moveGraphicNode(endX,endY));
             startTime = System.nanoTime(); //reset time for stage 2
             stageOne = false;
         }else{
             super.onEnd();
             Platform.runLater(()-> PieceGroup.getInstance().getChildren().remove(piece.getNode()));
-            Platform.runLater(()-> Check.getInstance().checkCheck());
             stop();
         }
+    }
+
+    public static void startInNewThread(Piece p, Piece newP,int endX, int endY){
+        new Thread(()->
+                new PromoteAnimator(p,newP,endX,endY).start()
+        ).start();
     }
 
 }

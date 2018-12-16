@@ -2,6 +2,7 @@ package highlighters;
 
 import board.Board;
 import board.Check;
+import cache.Turn;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.HighlightGroup;
 import main.Main;
@@ -267,7 +268,7 @@ public abstract class HighlighterBase implements Highlighter {
 
     final public void highlight(Piece p) {
 
-        if(!Main.getThisTurn().get())return;
+        if(!Turn.getInstance().getTurn())return;
 
         List<Vec> moves = highlights(p);
         //adds the list of final moves to the highlightGroup

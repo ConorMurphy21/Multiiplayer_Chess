@@ -1,8 +1,6 @@
 package Animators;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
 
@@ -10,8 +8,7 @@ public class TakeAnimator extends Animator {
 
     private Piece p;
 
-    public TakeAnimator(Piece take, BooleanProperty turn, boolean set){
-        super(turn,set);
+    public TakeAnimator(Piece take){
         p = take;
     }
 
@@ -24,5 +21,11 @@ public class TakeAnimator extends Animator {
     void onEnd(){
         Platform.runLater(()-> PieceGroup.getInstance().getChildren().remove(p.getNode()));
         stop();
+    }
+
+    public static void startInNewThread(Piece p){
+        new Thread(()->
+                new TakeAnimator(p).start()
+        ).start();
     }
 }

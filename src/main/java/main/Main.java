@@ -1,6 +1,7 @@
 package main;
 
 import board.graphics.BoardGroup;
+import cache.Turn;
 import highlighters.graphics.HighlightGroup;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
@@ -23,7 +24,6 @@ public class Main extends Application {
     }
 
 
-    private static BooleanProperty thisTurn = new SimpleBooleanProperty(false);
 
     private static Stage stage;
 
@@ -61,9 +61,10 @@ public class Main extends Application {
         text.setFont(new Font(14));
 
 
-        thisTurn.setValue(isWhite);
+        Turn turn = Turn.getInstance();
+        if(isWhite)turn.toggleTurn();
 
-        thisTurn.addListener((obs, old, nw)->{
+        turn.addListener((obs, old, nw)->{
             if(nw){
                 text.setText("Opponent has Played, It is your turn!");
             }else{
@@ -100,10 +101,6 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-    }
-
-    public static BooleanProperty getThisTurn(){
-        return thisTurn;
     }
 
 }

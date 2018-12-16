@@ -21,7 +21,6 @@ public class Board {
     private Vec b_king = new Vec(4,0), w_king = new Vec(4,7);
     private Piece lastMoved;
     private Vec lastMovedLocation;
-    private BooleanProperty turn = Main.getThisTurn();
 
     private Client client = Client.getInstance();
     private Piece[][] pieces = new Piece[8][8];
@@ -33,18 +32,17 @@ public class Board {
     }
 
     public void takeFromClient(Piece take){
-        turn.setValue(false);
         client.sendTake(take.getX(),take.getY());
-        take(take.getX(),take.getY(),false);
+        take(take.getX(),take.getY());
     }
     public void takeFromServer(int x, int y){
-        take(x,y,true);
+        take(x,y);
     }
 
-    private void take(int x, int y,boolean setTurn){
+    private void take(int x, int y){
         Piece take = pieces[x][y];
         new Thread(()->
-                new TakeAnimator(take,turn,setTurn).start()
+                new TakeAnimator(take).start()
         ).start();
         Board.getInstance().getPieces()[take.getX()][take.getY()] = null;
     }
@@ -55,14 +53,14 @@ public class Board {
 
         //run in new thread so that moves at the same time (castling) can occur
         new Thread(()->
-                new PieceAnimator(p,newX,newY,turn,true).start()
+                new PieceAnimator(p,newX,newY).start()
         ).start();
 
         //set take outside of new thread
         Piece take = pieces[newX][newY];
         if(take != null){
             new Thread(()->
-                    new TakeAnimator(take,turn,true).start()
+                    new TakeAnimator(take).start()
             ).start();
         }
 
@@ -72,19 +70,11 @@ public class Board {
 
     public void movePieceFromClient(Piece piece, int x, int y){
 
-        turn.setValue(false);
-
-        new Thread(()->
-            new PieceAnimator(piece,x,y,turn,false).start()
-        ).start();
+        PieceAnimator.startInNewThread(piece,x,y);
 
         Piece take = pieces[x][y];
 
-        if(take != null){
-            new Thread(()->
-                new TakeAnimator(take,turn, false).start()
-            ).start();
-        }
+        if(take != null) TakeAnimator.startInNewThread(take);
 
         client.sendMove(piece.getX(),piece.getY(),x,y);
 
@@ -108,34 +98,30 @@ public class Board {
     }
 
     public void promoteFromClient(Piece p, Piece newPiece, int x, int y){
-        turn.setValue(false);
-        promote(p,newPiece,x,y,false);
+        promote(p,newPiece,x,y);
         client.sendPromote(p.getX(),p.getY(),x,y,newPiece.getChar());
     }
 
     public void promoteFromServer(int x1, int y1, int x2, int y2, char c, boolean isWhite){
         Piece p = pieces[x1][y1];
         Piece newPiece = PieceFactory.create(x2,y2,c,!isWhite);
-        promote(p,newPiece,x2,y2,true);
+        promote(p,newPiece,x2,y2);
     }
 
     //note does not just promote, also moves as the turn does not change until finished promotion
-    private void promote(Piece p, Piece newPiece, int x, int y, boolean setTurn){
+    private void promote(Piece p, Piece newPiece, int x, int y){
 
         lastMovedLocation = new Vec(p.getX(),p.getY());
 
         pieces[p.getX()][p.getY()] = null;
 
         new Thread(()->
-            new PromoteAnimator(p,newPiece,x,y,turn,setTurn).start()
+            new PromoteAnimator(p,newPiece,x,y).start()
         ).start();
 
         Piece take;
-        if((take = pieces[x][y]) != null){
-            new Thread(()->
-                    new TakeAnimator(take,turn,setTurn).start()
-            ).start();
-        }
+        if((take = pieces[x][y]) != null) TakeAnimator.startInNewThread(take);
+
 
         newPiece.ini();
         newPiece.getNode().setOpacity(0);

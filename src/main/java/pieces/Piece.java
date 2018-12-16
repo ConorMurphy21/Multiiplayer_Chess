@@ -7,15 +7,21 @@ public interface Piece {
 
     boolean isWhite();
 
+    //returns whether the piece has ever moved
     boolean hasMoved();
 
+    //store if the piece has moved once
     void setMoved();
 
     Highlighter highlighter();
 
     PieceNode getNode();
 
-    void movePiece(double x, double y);
+    //for calculations, such as checking for checks or stalemates or where to move
+    void movePiece(int x, int y);
+
+    //more incremental steps for a smooth animation
+    void moveGraphicNode(double x, double y);
 
     int getX();
 
@@ -23,5 +29,7 @@ public interface Piece {
 
     void ini();
 
+    //get char associtated with the piece type
+    //useful for packets, and for picking image
     char getChar();
 }
