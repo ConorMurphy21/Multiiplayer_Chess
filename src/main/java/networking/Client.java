@@ -1,6 +1,7 @@
 package networking;
 
 import board.Board;
+import cache.*;
 import javafx.application.Platform;
 import main.Main;
 
@@ -18,6 +19,7 @@ public class Client extends Thread {
     private PrintWriter out;
     private BufferedReader in;
     private static final int PORT = 6666;
+    private static MoveCache moveCache = MoveCache.getInstance();
 
     public static Client getInstance(){
         return ourInstance;
@@ -43,6 +45,10 @@ public class Client extends Thread {
        out.println(send);
     }
 
+    public synchronized void sendEnPassant(int x, int y, int newX, int newY){
+        String send = joinWithCommas("06",x,y,newX,newY);
+    }
+
     //sends a packet ot the server that the client is taking a piece at x,y
     public synchronized void sendTake(int x, int y){
         String send = joinWithCommas("06",x,y);
@@ -64,7 +70,6 @@ public class Client extends Thread {
             System.out.println("waiting for opponent...");
 
             while(!isInterrupted()){
-
                 String message = in.readLine();
                 String[] parts = message.split(",");
 
@@ -104,7 +109,12 @@ public class Client extends Thread {
                         for (int i = 0; i < 4; i++) {
                             nums[i] = Integer.parseInt(parts[i + 1]);
                         }
+
                         //move that piece
+                        Move move = new NormalMove(nums[0],nums[1],nums[2],nums[3]);
+                        moveCache.addMove(move,true);
+
+                        //trying to switch over to listeners on the move cache
                         Platform.runLater(() -> Board.getInstance().movePieceFromServer(nums[0], nums[1], nums[2], nums[3]));
                         break;
 
@@ -136,7 +146,24 @@ public class Client extends Thread {
                      * action:
                      * apply the taking of this piece on the player's board
                      */
+
+                    /*
+                     * Will be changing this to an en passant packet
+                     */
                     case "03":
+
+
+                        //parse values of what piece is moving where
+                        /*nums = new int[4];
+                        for (int i = 0; i < 4; i++) {
+                            nums[i] = Integer.parseInt(parts[i + 1]);
+                        }
+
+                        //move that piece
+                        move = new EnPassant(nums[0],nums[1],nums[2],nums[3]);
+                        moveCache.addMove(move,true);*/
+
+
                         Platform.runLater(() -> Board.getInstance()
                                 .takeFromServer(Integer.parseInt(parts[1]), Integer.parseInt(parts[2])));
                         break;
@@ -146,13 +173,17 @@ public class Client extends Thread {
                      */
                     case "04":
                         //parse values of what piece is moving where
-                        int[] numbs = new int[4];
+                        nums = new int[4];
                         for (int i = 0; i < 4; i++) {
-                            numbs[i] = Integer.parseInt(parts[i + 1]);
+                            nums[i] = Integer.parseInt(parts[i + 1]);
                         }
                         char c = parts[5].charAt(0);
+
+                        move = new Promotion(nums[0],nums[1],nums[2],nums[3],c);
+                        moveCache.addMove(move,true);
+
                         //move that piece
-                        Platform.runLater(() -> Board.getInstance().promoteFromServer(numbs[0], numbs[1], numbs[2], numbs[3],c,isWhite));
+                        Platform.runLater(() -> Board.getInstance().promoteFromServer(nums[0], nums[1], nums[2], nums[3],c,isWhite));
                         break;
                 }
 
