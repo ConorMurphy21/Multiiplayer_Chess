@@ -1,9 +1,8 @@
 package Animators;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.BooleanProperty;
 
-public abstract class Animator extends AnimationTimer {
+abstract class Animator extends AnimationTimer {
 
     private static final double ENDTIME = 550000000;
 
@@ -23,7 +22,7 @@ public abstract class Animator extends AnimationTimer {
             tick(percent);
     }
 
-    double percentPast(long l){
+    private double percentPast(long l){
          return (l - startTime)/ENDTIME;
     }
 

@@ -2,16 +2,17 @@ package highlighters;
 
 import pieces.Piece;
 import utils.Vec;
+
 import java.util.List;
 
 public class KnightHL extends HighlighterBase {
-    private static KnightHL ourInstance = new KnightHL();
+    private static final KnightHL ourInstance = new KnightHL();
 
     public static KnightHL getInstance() {
         return ourInstance;
     }
 
-    private static int[][] options = {
+    private static final int[][] options = {
             {1,2},{-1,-2},{-1,2},{1,-2},
             {2,1},{-2,-1},{2,-1},{-2,1}
     };

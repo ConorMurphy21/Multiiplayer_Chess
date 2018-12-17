@@ -1,7 +1,8 @@
 package utils;
 
 public class Vec {
-    private int x, y;
+    private final int x;
+    private final int y;
 
     public Vec(int x, int y){
         this.x = x;

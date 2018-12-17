@@ -1,18 +1,16 @@
 package Animators;
 
-import board.Check;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import pieces.Piece;
 import pieces.graphics.PieceGroup;
 
 public class PromoteAnimator extends PieceAnimator {
 
-    private Piece newPiece;
+    private final Piece newPiece;
 
     private boolean stageOne;
     //assumes this piece has already been set to opacity 0 and been initialized
-    public PromoteAnimator(Piece piece, Piece newPiece, int endX, int endY){
+    private PromoteAnimator(Piece piece, Piece newPiece, int endX, int endY){
         super(piece,endX,endY);
         this.newPiece = newPiece;
         stageOne = true;

@@ -4,7 +4,10 @@ import cache.*;
 import javafx.application.Platform;
 import main.Main;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client extends Thread {
@@ -33,7 +36,7 @@ public class Client extends Thread {
     }
 
 
-    public void addMoveListenerToSend(){
+    private void addMoveListenerToSend(){
         moveCache.addListener(l -> {
             if(l.getAddedSize() == 1){
                 Move m = l.getAddedSubList().get(0);

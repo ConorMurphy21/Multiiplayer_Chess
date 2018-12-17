@@ -16,11 +16,6 @@ public class EnPassant extends Move{
         return 'e';
     }
 
-    @Override
-    public String asPacket() {
-        return super.asPacket();
-    }
-
     public static Move fromPacket(String[] parts){
         int[] terms = Move.intTerms(parts,4);
         return new EnPassant(terms[0],terms[1],terms[2],terms[3]);

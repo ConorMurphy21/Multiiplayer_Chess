@@ -5,13 +5,13 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 
 public class Turn {
-    private static Turn ourInstance = new Turn();
+    private static final Turn ourInstance = new Turn();
 
     public static Turn getInstance() {
         return ourInstance;
     }
 
-    BooleanProperty turn = new SimpleBooleanProperty(false);
+    private final BooleanProperty turn = new SimpleBooleanProperty(false);
 
     private Turn() {
         MoveCache.getInstance().addListener(l -> {

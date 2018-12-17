@@ -1,6 +1,5 @@
 package pieces;
 
-import Animators.PieceAnimator;
 import board.Board;
 import highlighters.Highlighter;
 import javafx.beans.property.DoubleProperty;
@@ -13,11 +12,13 @@ import utils.SizeUtil;
 public abstract class PieceBase implements Piece {
 
 
-    private DoubleProperty xxProperty, yyProperty;
+    private final DoubleProperty xxProperty;
+    private final DoubleProperty yyProperty;
 
     private int x,y;
 
-    private boolean isWhite, hasMoved;
+    private final boolean isWhite;
+    private boolean hasMoved;
 
     private static SizeUtil sizeUtil;
     private static PieceGroup group;
@@ -88,10 +89,6 @@ public abstract class PieceBase implements Piece {
     @Override
     public boolean hasMoved() {
         return hasMoved;
-    }
-
-    public void setMoved(){
-        hasMoved = true;
     }
 
     @Override

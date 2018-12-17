@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public class IterationObj {
 
     @FunctionalInterface
-    public interface Iterator{
+    interface Iterator{
         int iterate(int i);
     }
 
@@ -21,8 +21,9 @@ public class IterationObj {
     }
 
     private int x, y;
-    private Iterator xIt,yIt;
-    private double slope;
+    private final Iterator xIt;
+    private final Iterator yIt;
+    private final double slope;
 
     private IterationObj(int x, int y, Iterator xIt, Iterator yIt, double slope){
         this.x = x;
@@ -82,7 +83,7 @@ public class IterationObj {
     }
 
     public boolean isNormalSlope(){
-        return Math.abs(getSlope()) >= 1 || getSlope() == 0;
+        return !(Math.abs(getSlope()) >= 1) && !(getSlope() == 0);
     }
 
     public boolean isStraight(){

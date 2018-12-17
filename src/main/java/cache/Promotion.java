@@ -4,7 +4,7 @@ import pieces.Piece;
 
 public class Promotion extends Move {
 
-    private char newType;
+    private final char newType;
 
     private Promotion(int fromX, int fromY, int toX, int toY, char newType) {
         super(fromX, fromY, toX, toY);

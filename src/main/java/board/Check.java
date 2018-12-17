@@ -4,7 +4,6 @@ import cache.Move;
 import cache.MoveCache;
 import highlighters.HighlighterBase;
 import pieces.Piece;
-
 import utils.IterationObj;
 import utils.IterationObj.PieceBreak;
 import utils.IterationObj.PieceReturn;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Check {
-    private static Check ourInstance = new Check();
+    private static final Check ourInstance = new Check();
 
     public static Check getInstance() {
         return ourInstance;
@@ -25,7 +24,7 @@ public class Check {
     private static Board board;
 
     //not always the last moved piece
-    private List<Piece> checkers = new ArrayList<>();
+    private final List<Piece> checkers = new ArrayList<>();
 
     private Check() {
         check = false;
@@ -39,7 +38,7 @@ public class Check {
         );
     }
 
-    public void checkCheck(Move m){
+    private void checkCheck(Move m){
 
         //clear checkers from last check
         checkers.clear();
@@ -66,7 +65,7 @@ public class Check {
         //to see if it was blocking an attacking piece from hitting the king
         IterationObj obj = IterationObj.create(king.getX(),king.getY(),place.getX(),place.getY());
         obj.iterateStartLoc();
-        if(!obj.isNormalSlope())return;
+        if(obj.isNormalSlope())return;
 
         PieceBreak br = (x,y)->board.getPieces()[x][y] != null;
 

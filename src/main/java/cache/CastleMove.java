@@ -7,8 +7,11 @@ import utils.StringJoin;
 public class CastleMove extends Move {
 
 
-    private Piece rook;
-    private int rFromX, rFromY, rToX, rToY;
+    private final Piece rook;
+    private final int rFromX;
+    private final int rFromY;
+    private final int rToX;
+    private final int rToY;
 
     private CastleMove(int fromX, int fromY, int toX, int toY, int rFromX, int rFromY, int rToX, int rToY) {
         super(fromX, fromY, toX, toY);

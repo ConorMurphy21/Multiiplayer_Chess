@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 import utils.SizeUtil;
 
 public class HighlightGroup extends Group {
-    private static HighlightGroup ourInstance = new HighlightGroup();
+    private static final HighlightGroup ourInstance = new HighlightGroup();
 
     public static HighlightGroup getInstance() {
         return ourInstance;

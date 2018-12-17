@@ -3,15 +3,16 @@ package cache;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 
 
 public class MoveCache {
 
 
-    private ObservableList<Move> moves = FXCollections.observableArrayList(new ArrayList<>());
+    private final ObservableList<Move> moves = FXCollections.observableArrayList(new ArrayList<>());
 
-    private static MoveCache ourInstance = new MoveCache();
+    private static final MoveCache ourInstance = new MoveCache();
 
     private Turn turn;
 

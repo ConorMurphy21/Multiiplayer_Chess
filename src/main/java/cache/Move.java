@@ -6,12 +6,14 @@ import utils.StringJoin;
 import utils.Vec;
 
 public abstract class Move {
-    private Piece piece;
-    private int fromX, fromY, toX, toY;
-
-    private Board board = Board.getInstance();
+    private final Piece piece;
+    private final int fromX;
+    private final int fromY;
+    private final int toX;
+    private final int toY;
 
     Move(int fromX, int fromY, int toX, int toY) {
+        Board board = Board.getInstance();
         this.piece = board.getPieces()[fromX][fromY];
         this.fromX = fromX;
         this.fromY = fromY;

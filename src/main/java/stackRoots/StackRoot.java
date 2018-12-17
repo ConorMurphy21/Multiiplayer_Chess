@@ -7,7 +7,7 @@ public abstract class StackRoot extends BorderPane {
 
     private static StackPane stack;
 
-    public StackRoot(){
+    StackRoot(){
         stack.getChildren().add(this);
     }
 
@@ -15,7 +15,7 @@ public abstract class StackRoot extends BorderPane {
         StackRoot.stack = stack;
     }
 
-    public void pop(){
+    void pop(){
         stack.getChildren().remove(this);
     }
 }

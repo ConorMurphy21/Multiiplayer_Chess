@@ -8,11 +8,12 @@ import highlighters.graphics.PromoteHighlight;
 import highlighters.graphics.SlideHighlight;
 import pieces.Piece;
 import utils.Vec;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PawnHL extends HighlighterBase {
-    private static PawnHL ourInstance = new PawnHL();
+    private static final PawnHL ourInstance = new PawnHL();
 
     public static PawnHL getInstance() {
         return ourInstance;

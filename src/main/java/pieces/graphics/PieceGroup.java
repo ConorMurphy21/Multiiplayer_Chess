@@ -7,7 +7,7 @@ import pieces.PieceFactory;
 import utils.SizeUtil;
 
 public class PieceGroup extends Group {
-    private static PieceGroup ourInstance = new PieceGroup();
+    private static final PieceGroup ourInstance = new PieceGroup();
 
     public static PieceGroup getInstance() {
         return ourInstance;

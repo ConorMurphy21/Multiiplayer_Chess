@@ -5,8 +5,8 @@ import highlighters.graphics.Highlight;
 import pieces.Knight;
 import pieces.Piece;
 import utils.IterationObj;
-import utils.IterationObj.PieceReturn;
 import utils.IterationObj.PieceBreak;
+import utils.IterationObj.PieceReturn;
 import utils.Vec;
 
 import java.util.ArrayList;
@@ -14,13 +14,13 @@ import java.util.List;
 
 public class KingHL extends HighlighterBase {
 
-    private static int[][] options = {
+    private static final int[][] options = {
             {-1,-1},{0,-1},{1,-1},
             {-1,0}, /*x,y*/{1,0},
             {-1,1}, {0,1}, {1,1}
     };
 
-    private static KingHL ourInstance = new KingHL();
+    private static final KingHL ourInstance = new KingHL();
 
     public static KingHL getInstance() {
         return ourInstance;
@@ -39,7 +39,7 @@ public class KingHL extends HighlighterBase {
     }
 
 
-    List<Vec> castlingMoves(Piece p){
+    private List<Vec> castlingMoves(Piece p){
 
         ArrayList<Vec> moves = new ArrayList<>();
         if(p.hasMoved())return moves;

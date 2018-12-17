@@ -5,12 +5,11 @@ import board.Check;
 import cache.Turn;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.HighlightGroup;
-import main.Main;
 import pieces.Piece;
 import utils.IterationObj;
-import utils.Vec;
 import utils.IterationObj.PieceBreak;
 import utils.IterationObj.PieceReturn;
+import utils.Vec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public abstract class HighlighterBase implements Highlighter {
     private static HighlightGroup group;
 
     private static Board board;
-    protected static Piece[][] pieces;
+    static Piece[][] pieces;
 
     /*** finds the moves that any piece can make if it is protecting the king***/
 
@@ -31,7 +30,7 @@ public abstract class HighlighterBase implements Highlighter {
     List<Vec> findAggressorMoves(Piece p){
         Vec king = sameKing(p);
         IterationObj obj = IterationObj.create(king.getX(),king.getY(),p.getX(),p.getY());
-        if(!obj.isNormalSlope())return null;
+        if(obj.isNormalSlope())return null;
 
         ArrayList<Vec> moves = new ArrayList<>();
 
@@ -166,7 +165,7 @@ public abstract class HighlighterBase implements Highlighter {
         //make an object that will iterate from the king to the piece
         IterationObj obj = IterationObj.create(aX,aY,p.getX(),p.getY());
 
-        if (!obj.isNormalSlope()) return false;
+        if (obj.isNormalSlope()) return false;
 
         boolean straight = obj.isStraight();
 
@@ -196,10 +195,6 @@ public abstract class HighlighterBase implements Highlighter {
     private Vec sameKing(Piece p){
         return (p.isWhite()) ? board.getW_king() : board.getB_king();
     }
-    final Vec OppKing(Piece p){
-        return (p.isWhite()) ? board.getB_king() : board.getW_king();
-    }
-
 
 
     final List<Vec> highlightAllOptions(Piece p, int[][] options) {

@@ -5,15 +5,16 @@ import pieces.Piece;
 import utils.Vec;
 
 public class Board {
-    private static Board ourInstance = new Board();
+    private static final Board ourInstance = new Board();
 
     public static Board getInstance() {
         return ourInstance;
     }
 
-    private Vec b_king = new Vec(4,0), w_king = new Vec(4,7);
+    private final Vec b_king = new Vec(4,0);
+    private final Vec w_king = new Vec(4,7);
 
-    private Piece[][] pieces = new Piece[8][8];
+    private final Piece[][] pieces = new Piece[8][8];
 
     private Board(){
         BoardManager bm = new BoardManager();

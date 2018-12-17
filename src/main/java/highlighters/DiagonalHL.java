@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DiagonalHL extends HighlighterBase {
-    private static DiagonalHL ourInstance = new DiagonalHL();
+    private static final DiagonalHL ourInstance = new DiagonalHL();
 
     public static DiagonalHL getInstance() {
         return ourInstance;

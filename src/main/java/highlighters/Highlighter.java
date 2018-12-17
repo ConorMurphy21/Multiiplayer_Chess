@@ -1,6 +1,5 @@
 package highlighters;
 
-import highlighters.graphics.Highlight;
 import pieces.Piece;
 import utils.Vec;
 

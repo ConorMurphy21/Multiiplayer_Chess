@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueenHL extends HighlighterBase {
-    private static QueenHL ourInstance = new QueenHL();
+    private static final QueenHL ourInstance = new QueenHL();
 
     public static QueenHL getInstance() {
         return ourInstance;
     }
 
-    private StraightHL straightHL = StraightHL.getInstance();
-    private DiagonalHL diagonalHL = DiagonalHL.getInstance();
+    private final StraightHL straightHL = StraightHL.getInstance();
+    private final DiagonalHL diagonalHL = DiagonalHL.getInstance();
 
     private QueenHL() {
     }

@@ -16,11 +16,6 @@ public class NormalMove extends Move {
         return 'n';
     }
 
-    @Override
-    public String asPacket() {
-        return super.asPacket();
-    }
-
     public static Move fromPacket(String[] parts){
         int[] terms = Move.intTerms(parts,4);
         return new NormalMove(terms[0],terms[1],terms[2],terms[3]);

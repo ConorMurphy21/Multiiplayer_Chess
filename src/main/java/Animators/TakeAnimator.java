@@ -6,9 +6,9 @@ import pieces.graphics.PieceGroup;
 
 public class TakeAnimator extends Animator {
 
-    private Piece p;
+    private final Piece p;
 
-    public TakeAnimator(Piece take){
+    private TakeAnimator(Piece take){
         p = take;
     }
 

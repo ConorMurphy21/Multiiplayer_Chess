@@ -12,10 +12,10 @@ import static utils.StringJoin.joinWithCommas;
 class Player extends Thread{
 
     private Player opponent;
-    private Socket socket;
+    private final Socket socket;
     private BufferedReader input;
     private PrintWriter output;
-    private boolean isWhite;
+    private final boolean isWhite;
 
     Player(Socket socket, boolean isWhite) {
 

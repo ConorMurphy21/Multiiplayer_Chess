@@ -3,15 +3,14 @@ package highlighters.graphics;
 import board.Board;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import main.Main;
 import pieces.Piece;
 import utils.SizeUtil;
 
 public class Highlight extends Rectangle {
 
-    static SizeUtil su;
+    private static SizeUtil su;
 
-    static Piece[][] pieces;
+    private static Piece[][] pieces;
 
     private static final Color color = Color.rgb(24,200,200,0.6);
 

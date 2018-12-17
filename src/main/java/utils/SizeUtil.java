@@ -3,8 +3,10 @@ package utils;
 import highlighters.graphics.Highlight;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
-import javafx.beans.property.*;
-import javafx.scene.Node;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import pieces.graphics.PieceNode;
@@ -12,10 +14,11 @@ import pieces.graphics.PieceNode;
 public class SizeUtil {
     private static SizeUtil ourInstance;
 
-    private NumberBinding size,minDim;
+    private final NumberBinding size;
+    private final NumberBinding minDim;
     //the board is flipped when so both players on their own screen see theirs at the bottom
     //but the indexes in the actual board are the same
-    private boolean flipped;
+    private final boolean flipped;
 
     private SizeUtil(ReadOnlyDoubleProperty width, ReadOnlyDoubleProperty height, boolean isWhite) {
         //size of a single node
@@ -78,10 +81,9 @@ public class SizeUtil {
     }
 
     /** INSTANCE MANAGEMENT **/
-    public static SizeUtil createInstance(ReadOnlyDoubleProperty width, ReadOnlyDoubleProperty height, boolean isWhite){
-        if(ourInstance != null)return ourInstance;
+    public static void createInstance(ReadOnlyDoubleProperty width, ReadOnlyDoubleProperty height, boolean isWhite){
+        if(ourInstance != null)
         else ourInstance = new SizeUtil(width, height,isWhite);
-        return ourInstance;
     }
 
     public static SizeUtil getInstance() {

@@ -1,20 +1,21 @@
 package Animators;
 
-import board.Check;
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import pieces.Piece;
-import pieces.graphics.PieceGroup;
 
 public class PieceAnimator extends Animator {
 
 
-    double xDif,yDif,startX,startY,endX,endY;
+    private final double xDif;
+    private final double yDif;
+    private final double startX;
+    private final double startY;
+    final double endX;
+    final double endY;
 
-    Piece piece;
+    final Piece piece;
 
-    public PieceAnimator(Piece piece, int endX, int endY){
+    PieceAnimator(Piece piece, int endX, int endY){
         this.piece = piece;
         this.startX = piece.getX();
         this.startY = piece.getY();

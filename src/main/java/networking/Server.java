@@ -1,8 +1,6 @@
 
 package networking;
 
-import networking.Player;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 

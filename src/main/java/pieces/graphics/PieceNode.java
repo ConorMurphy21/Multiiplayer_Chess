@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class PieceNode extends ImageView {
 
-    private static HashMap<String, Image> images = new HashMap<>();
+    private static final HashMap<String, Image> images = new HashMap<>();
     public PieceNode(String path){
         if(images.get(path) == null){
             Image image = new Image(getClass().getClassLoader().getResourceAsStream(path));

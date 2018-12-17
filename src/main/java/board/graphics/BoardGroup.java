@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 import utils.SizeUtil;
 
 public class BoardGroup extends Group {
-    private static BoardGroup ourInstance = new BoardGroup();
+    private static final BoardGroup ourInstance = new BoardGroup();
 
     public static BoardGroup getInstance() {
         return ourInstance;

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StraightHL extends HighlighterBase{
-    private static StraightHL ourInstance = new StraightHL();
+    private static final StraightHL ourInstance = new StraightHL();
 
     public static StraightHL getInstance() {
         return ourInstance;
