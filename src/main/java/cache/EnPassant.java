@@ -11,4 +11,9 @@ public class EnPassant extends Move{
         super(piece, toX, toY);
     }
 
+    @Override
+    public char getChar() {
+        return 'e';
+    }
+
 }

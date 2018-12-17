@@ -49,8 +49,12 @@ public abstract class Move {
     public int getToY() {
         return toY;
     }
+
     public Vec getToVec(){
         return new Vec(toX,toY);
     }
+
+    public abstract char getChar();
+
 
 }

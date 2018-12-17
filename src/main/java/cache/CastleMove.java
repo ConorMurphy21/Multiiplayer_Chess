@@ -26,4 +26,10 @@ public class CastleMove extends Move {
         this.rFromX = rook.getX();
         this.rFromY = rook.getY();
     }
+
+    @Override
+    public char getChar() {
+        return 'c';
+    }
+
 }

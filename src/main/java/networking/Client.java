@@ -19,13 +19,15 @@ public class Client extends Thread {
     private PrintWriter out;
     private BufferedReader in;
     private static final int PORT = 6666;
-    private static MoveCache moveCache = MoveCache.getInstance();
+    private static MoveCache moveCache;
 
     public static Client getInstance(){
         return ourInstance;
     }
 
-    private Client(){}
+    private Client(){
+        moveCache = MoveCache.getInstance();
+    }
 
     private void startConnection(String ip) throws IOException {
         this.clientSocket = new Socket(ip, PORT);

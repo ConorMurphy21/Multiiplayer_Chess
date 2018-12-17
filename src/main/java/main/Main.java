@@ -33,7 +33,7 @@ public class Main extends Application {
         stage = primaryStage;
         stage.setTitle("Chess");
 
-        Client client =  Client.getInstance();
+        Client client = Client.getInstance();
         client.start();
 
         stage.setOnCloseRequest(e->client.sendQuit());

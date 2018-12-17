@@ -19,8 +19,6 @@ public class Board {
     }
 
     private Vec b_king = new Vec(4,0), w_king = new Vec(4,7);
-    private Piece lastMoved;
-    private Vec lastMovedLocation;
 
     private Client client = Client.getInstance();
     private Piece[][] pieces = new Piece[8][8];
@@ -52,17 +50,12 @@ public class Board {
         Piece p = pieces[x][y];
 
         //run in new thread so that moves at the same time (castling) can occur
-        new Thread(()->
-                new PieceAnimator(p,newX,newY).start()
-        ).start();
+        PieceAnimator.startInNewThread(p,x,y);
 
         //set take outside of new thread
         Piece take = pieces[newX][newY];
-        if(take != null){
-            new Thread(()->
-                    new TakeAnimator(take).start()
-            ).start();
-        }
+        if(take != null)
+            TakeAnimator.startInNewThread(take);
 
         movePiece(p,newX,newY);
 
@@ -83,8 +76,6 @@ public class Board {
 
     private void movePiece(Piece piece, int x, int y){
 
-        lastMovedLocation = new Vec(piece.getX(),piece.getY());
-
         pieces[piece.getX()][piece.getY()] = null;
 
         pieces[x][y] = piece;
@@ -94,7 +85,6 @@ public class Board {
         }
 
         piece.setMoved();
-        lastMoved = piece;
     }
 
     public void promoteFromClient(Piece p, Piece newPiece, int x, int y){
@@ -111,7 +101,6 @@ public class Board {
     //note does not just promote, also moves as the turn does not change until finished promotion
     private void promote(Piece p, Piece newPiece, int x, int y){
 
-        lastMovedLocation = new Vec(p.getX(),p.getY());
 
         pieces[p.getX()][p.getY()] = null;
 
@@ -127,7 +116,6 @@ public class Board {
         newPiece.getNode().setOpacity(0);
 
         p.setMoved();
-        lastMoved = p;
 
     }
 
@@ -143,9 +131,5 @@ public class Board {
         return w_king;
     }
 
-    public Piece getLastMoved() {
-        return lastMoved;
-    }
 
-    public Vec getLastMovedLocation(){return lastMovedLocation; }
 }

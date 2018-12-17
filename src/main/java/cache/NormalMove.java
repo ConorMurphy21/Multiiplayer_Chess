@@ -10,4 +10,9 @@ public class NormalMove extends Move {
     public NormalMove(Piece piece, int toX, int toY) {
         super(piece, toX, toY);
     }
+
+    @Override
+    public char getChar() {
+        return 'n';
+    }
 }

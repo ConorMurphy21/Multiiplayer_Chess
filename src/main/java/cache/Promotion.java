@@ -15,4 +15,9 @@ public class Promotion extends Move {
         super(piece, toX, toY);
         this.newType = newType;
     }
+
+    @Override
+    public char getChar() {
+        return 'p';
+    }
 }

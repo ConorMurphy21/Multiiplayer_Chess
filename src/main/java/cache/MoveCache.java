@@ -1,42 +1,38 @@
 package cache;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import networking.Client;
+
+import java.util.ArrayList;
 
 
 public class MoveCache {
 
-    /*
-     * turn is true if it is client's turn
-     * false if it is the server's turn
-     */
 
-    private BooleanProperty turn = new SimpleBooleanProperty();
-
-    private ObservableList<Move> moves = FXCollections.observableArrayList();
+    private ObservableList<Move> moves = FXCollections.observableArrayList(new ArrayList<>());
 
     private static MoveCache ourInstance = new MoveCache();
+
+    private Turn turn;
 
     public static MoveCache getInstance(){
         return ourInstance;
     }
 
-    private MoveCache(){}
+    private MoveCache(){
+    }
 
     public void addMove(Move move, boolean fromServer){
-
+        if(turn == null)turn = Turn.getInstance();
             //from server
         if(fromServer){
-            if(turn.get()){
+            if(turn.getTurn()){
                 //would be a good idea to send back an error packet later on
                 return;
             }
         }else{  //from client
-            if(!turn.get()){
+            if(!turn.getTurn()){
                 //would be a good idea to display an error message at some point
                 return;
             }
@@ -49,12 +45,7 @@ public class MoveCache {
         moves.addListener(listChangeListener);
     }
 
-    public void ini(boolean startTurn){
-        turn.setValue(startTurn);
+    public Move getLastMove(){
+        return moves.get(moves.size()-1);
     }
-
-    public BooleanProperty getTurn(){
-        return turn;
-    }
-
 }
