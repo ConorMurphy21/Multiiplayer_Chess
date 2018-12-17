@@ -26,7 +26,7 @@ class Player extends Thread{
                     new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
             //print here what type of packet it is
-                        //send reset/set packet, to reset the board as white
+            //send reset/set packet, to reset the board as white
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,10 +43,8 @@ class Player extends Thread{
         return true;
     }
 
-    //sends a move packet to client by the protocol in client
-    private synchronized void sendMove(int[] points){
-        String send = joinWithCommas("01",points[0],points[1],points[2],points[3]);
-        output.println(send);
+    private synchronized void sendPacket(String packet){
+        output.println(packet);
     }
 
     //sends disconnect packet to client by the protocol in client
@@ -55,20 +53,9 @@ class Player extends Thread{
         output.println(send);
     }
 
-    //sends valid take packet to client by the protocol in client
-    private synchronized void sendTake(String args){
-        String send = joinWithCommas("03",args);
-        output.println(send);
-    }
-
     //sends valid ini packet to client by the protocol in client
     private synchronized void sendIniPacket(){
         String send = joinWithCommas("00",isWhite);
-        output.println(send);
-    }
-
-    private synchronized void sendPromote(String params){
-        String send = joinWithCommas("04",params);
         output.println(send);
     }
 
@@ -86,6 +73,25 @@ class Player extends Thread{
                 String[] parts = message.split(",");
 
                 switch (parts[0]) {
+
+                    /*
+                     * reset packet - not implemented yet
+                     */
+
+                    case "00":
+                        break;
+
+                    /*
+                     * quit packet - the client would like to quit the game
+                     * action:
+                     * send disconnect packet to both clients
+                     */
+                    case "01":
+                        opponent.sendDis(true);
+                        sendDis(false);
+                        interrupt();
+                        break;
+
                     /*
                      * move packet - the client would like to move their player
                      * param 1: x1 (int) x pos of piece to be moved
@@ -95,40 +101,48 @@ class Player extends Thread{
                      * action:
                      * send a move packet to the opponent so the opponent will know our client has moved
                      */
+                    case "02":
+
+                        /*
+                         * En Passant packet - the client would like to move their player
+                         * param 1: x1 (int) x pos of piece to be moved
+                         * param 2: y1 (int) y pos of piece to be moved
+                         * param 3: x2 (int) x pos of where piece will move to
+                         * param 4: y2 (int) y pos of where piece will move to
+                         * action:
+                         * send a move packet to the opponent so the opponent will know our client has moved
+                         */
+
+
+                    case "03":
+
+                        /*
+                         * Castle packet - the client would like to move their player
+                         * param 1: x1 (int) x pos of piece to be moved
+                         * param 2: y1 (int) y pos of piece to be moved
+                         * param 3: x2 (int) x pos of where piece will move to
+                         * param 4: y2 (int) y pos of where piece will move to
+                         * action:
+                         * send a move packet to the opponent so the opponent will know our client has moved
+                         */
+
                     case "04":
-                        int[] nums = new int[4];
-                        for (int i = 0; i < 4; i++) {
-                            nums[i] = Integer.parseInt(parts[i + 1]);
-                        }
-                        opponent.sendMove(nums);
-                        break;
-
                         /*
-                         * quit packet - the client would like to quit the game
+                         * Promotion packet - the client would like to move their player
+                         * param 1: x1 (int) x pos of piece to be moved
+                         * param 2: y1 (int) y pos of piece to be moved
+                         * param 3: x2 (int) x pos of where piece will move to
+                         * param 4: y2 (int) y pos of where piece will move to
+                         * param 5: newType (char) new type of piece
                          * action:
-                         * send disconnect packet to both clients
+                         * send a move packet to the opponent so the opponent will know our client has moved
                          */
+
+
                     case "05":
-                        //quit packet
-                        opponent.sendDis(true);
-                        sendDis(false);
-                        interrupt();
-                        break;
 
-                        /*
-                         * take packet - the client would like to take an opponents piece
-                         * param 1: x (int) - x pos of piece to be taken
-                         * param 2: y (int) - y pos of piece to be taken
-                         * action:
-                         * send take packet to opponent so the opponent know their piece has been taken
-                         */
-                    case "06":
-                        opponent.sendTake(message.substring(3));
-                        break;
-
-                    case "07":
-                        opponent.sendPromote(message.substring(3));
-                        break;
+                        //send the packet sent back to the opponent
+                        sendPacket(message.substring(3));
                 }
             }
         } catch (IOException e) {

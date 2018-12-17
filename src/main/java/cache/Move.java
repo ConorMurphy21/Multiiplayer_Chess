@@ -2,11 +2,12 @@ package cache;
 
 import board.Board;
 import pieces.Piece;
+import utils.StringJoin;
 import utils.Vec;
 
 public abstract class Move {
-    Piece piece;
-    int fromX, fromY, toX, toY;
+    private Piece piece;
+    private int fromX, fromY, toX, toY;
 
     private Board board = Board.getInstance();
 
@@ -18,7 +19,7 @@ public abstract class Move {
         this.toY = toY;
     }
 
-    public Move(Piece piece, int toX, int toY) {
+    Move(Piece piece, int toX, int toY) {
         this.piece = piece;
         this.fromX = piece.getX();
         this.fromY = piece.getY();
@@ -56,5 +57,16 @@ public abstract class Move {
 
     public abstract char getChar();
 
+    public String asPacket(){
+        return StringJoin.joinWithCommas(fromX,fromY,toX,toY);
+    }
 
+    //a string array of asPacket, as terms without commas
+    static int[] intTerms(String[] parts, int length){
+        int[] terms = new int[length];
+        for (int i = 0; i < length; i++) {
+            terms[i] = Integer.parseInt(parts[i + 1]);
+        }
+        return terms;
+    }
 }

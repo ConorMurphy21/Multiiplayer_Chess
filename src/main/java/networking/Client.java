@@ -1,14 +1,11 @@
 package networking;
 
-import board.Board;
 import cache.*;
 import javafx.application.Platform;
 import main.Main;
 
 import java.io.*;
 import java.net.Socket;
-
-import static utils.StringJoin.joinWithCommas;
 
 public class Client extends Thread {
 
@@ -35,10 +32,16 @@ public class Client extends Thread {
         this.out = new PrintWriter(clientSocket.getOutputStream(), true);
     }
 
-    //sends a move packet to the server
-    public synchronized void sendMove(int x, int y, int newX, int newY){
-        String send = joinWithCommas("04",x,y,newX,newY);
-        out.println(send);
+
+    public void addMoveListenerToSend(){
+        moveCache.addListener(l -> {
+            if(l.getAddedSize() == 1){
+                Move m = l.getAddedSubList().get(0);
+                if(m.getPiece().isWhite() == this.isWhite){
+                    sendMove(m);
+                }
+            }
+        });
     }
 
     //sends a packet to the server that the client would like to quit
@@ -47,21 +50,11 @@ public class Client extends Thread {
        out.println(send);
     }
 
-    public synchronized void sendEnPassant(int x, int y, int newX, int newY){
-        String send = joinWithCommas("06",x,y,newX,newY);
-    }
-
-    //sends a packet ot the server that the client is taking a piece at x,y
-    public synchronized void sendTake(int x, int y){
-        String send = joinWithCommas("06",x,y);
+    //sends a move packet to the server
+    private synchronized void sendMove(Move m){
+        String send = m.asPacket();
         out.println(send);
     }
-
-    public synchronized void sendPromote(int x1, int y1, int x2, int y2, char c){
-        String line = joinWithCommas("07",x1,y1,x2,y2,c);
-        out.println(line);
-    }
-
 
     /***PROTOCOL FOR PACKETS SENT TO CLIENT***/
     //all packet handling from the server happens here
@@ -70,6 +63,7 @@ public class Client extends Thread {
         try {
             startConnection("localhost");
             System.out.println("waiting for opponent...");
+            addMoveListenerToSend();
 
             while(!isInterrupted()){
                 String message = in.readLine();
@@ -96,29 +90,6 @@ public class Client extends Thread {
                         Platform.runLater(() -> Main.ini(isWhite));
                         break;
 
-                    /*
-                     * move packet - takes info from the server on where to move a piece (opponents piece)
-                     * param 1: x1 (int) x pos of piece to be moved
-                     * param 2: y1 (int) y pos of piece to be moved
-                     * param 3: x2 (int) x pos of where piece will move to
-                     * param 4: y2 (int) y pos of where piece will move to
-                     * action:
-                     * apply move in clients game
-                     */
-                    case "01":
-                        //parse values of what piece is moving where
-                        int[] nums = new int[4];
-                        for (int i = 0; i < 4; i++) {
-                            nums[i] = Integer.parseInt(parts[i + 1]);
-                        }
-
-                        //move that piece
-                        Move move = new NormalMove(nums[0],nums[1],nums[2],nums[3]);
-                        moveCache.addMove(move,true);
-
-                        //trying to switch over to listeners on the move cache
-                        Platform.runLater(() -> Board.getInstance().movePieceFromServer(nums[0], nums[1], nums[2], nums[3]));
-                        break;
 
                     /*
                      * disconnect packet - receives info that one of the players has disconnected
@@ -128,7 +99,7 @@ public class Client extends Thread {
                      * either close the program because this player wants to quit or,
                      * inform the client that the other player has left the game/let them win
                      */
-                    case "02":
+                    case "01":
                         if (Boolean.parseBoolean(parts[1])) {
                             //say you win the game cuz the other player disconnected
                             System.out.println("other player is disconnecting");
@@ -140,52 +111,43 @@ public class Client extends Thread {
                         break;
 
                     /*
-                     * take packet - receives info that a piece should be taken
-                     * (this packet is only sent when the taking is occurring in a separate
-                     * location than the move) or from pond sliding
-                     * param 1: x (int) x pos that needs to be taken
-                     * param 2: Y (int) y pos that needs to be taken
+                     * Move packet - takes info from the server on where to move a piece (opponents piece)
+                     * param 1: x1 (int) x pos of piece to be moved
+                     * param 2: y1 (int) y pos of piece to be moved
+                     * param 3: x2 (int) x pos of where piece will move to
+                     * param 4: y2 (int) y pos of where piece will move to
                      * action:
-                     * apply the taking of this piece on the player's board
+                     * apply move in clients game
                      */
+                    case "02":
+                        Move move = NormalMove.fromPacket(parts);
+                        moveCache.addMove(move,true);
+                        break;
 
-                    /*
-                     * Will be changing this to an en passant packet
-                     */
+                   /*
+                    * En Passant packet
+                    */
                     case "03":
+                        move = EnPassant.fromPacket(parts);
+                        moveCache.addMove(move,true);
+                        break;
 
+                        /*
+                         * Castle Packet
+                         */
 
-                        //parse values of what piece is moving where
-                        /*nums = new int[4];
-                        for (int i = 0; i < 4; i++) {
-                            nums[i] = Integer.parseInt(parts[i + 1]);
-                        }
-
-                        //move that piece
-                        move = new EnPassant(nums[0],nums[1],nums[2],nums[3]);
-                        moveCache.addMove(move,true);*/
-
-
-                        Platform.runLater(() -> Board.getInstance()
-                                .takeFromServer(Integer.parseInt(parts[1]), Integer.parseInt(parts[2])));
+                    case "04":
+                        move = CastleMove.fromPacket(parts);
+                        moveCache.addMove(move,true);
                         break;
 
                     /*
                      * promote packet - receives info that an opponents piece should be promoted
                      */
-                    case "04":
+                    case "05":
                         //parse values of what piece is moving where
-                        nums = new int[4];
-                        for (int i = 0; i < 4; i++) {
-                            nums[i] = Integer.parseInt(parts[i + 1]);
-                        }
-                        char c = parts[5].charAt(0);
-
-                        move = new Promotion(nums[0],nums[1],nums[2],nums[3],c);
+                        move = Promotion.fromPacket(parts);
                         moveCache.addMove(move,true);
-
-                        //move that piece
-                        Platform.runLater(() -> Board.getInstance().promoteFromServer(nums[0], nums[1], nums[2], nums[3],c,isWhite));
                         break;
                 }
 

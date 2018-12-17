@@ -56,10 +56,9 @@ public abstract class PieceBase implements Piece {
 
 
     public void movePiece(int x, int y){
-        new Thread(() ->
-            new PieceAnimator(this,x,y).start()
-        ).start();
-
+        this.x = x;
+        this.y = y;
+        hasMoved = true;
     }
 
     public void moveGraphicNode(double x, double y){

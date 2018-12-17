@@ -10,9 +10,6 @@ public interface Piece {
     //returns whether the piece has ever moved
     boolean hasMoved();
 
-    //store if the piece has moved once
-    void setMoved();
-
     Highlighter highlighter();
 
     PieceNode getNode();
