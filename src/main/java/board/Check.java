@@ -1,6 +1,8 @@
 package board;
 
+import cache.CastleMove;
 import cache.Move;
+import cache.NormalMove;
 import cache.Promotion;
 import highlighters.HighlighterBase;
 import pieces.Piece;
@@ -33,6 +35,10 @@ public class Check {
 
     void checkCheck(Move m){
 
+        //if it's a castle move the only thing that matters is the rook, the king will never cause a check
+        if(m instanceof CastleMove)
+            m = new NormalMove(((CastleMove) m).getRook(),((CastleMove) m).getrToX(),((CastleMove) m).getrToY());
+
 
         isWhiteCheck = m.getPiece().isWhite();
 
@@ -41,6 +47,7 @@ public class Check {
 
         final Piece p;
 
+        //if it's a promotion we want the new piece, not the old one
         if(m instanceof Promotion) {
             p = board.getPieces()[m.getToX()][m.getToY()];
             System.out.println(p.highlighter());
