@@ -237,7 +237,7 @@ public abstract class HighlighterBase implements Highlighter {
 
         aggressorMoves = findAggressorMoves(p);
 
-        if (Check.getInstance().isCheck()) {
+        if (Check.getInstance().isCheck() && Check.getInstance().isWhiteCheck() != p.isWhite()) {
             protectKing = protectKing(p,Check.getInstance().getCheckers());
         }
 

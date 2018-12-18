@@ -1,5 +1,6 @@
 package board;
 
+import cache.Move;
 import cache.MoveCache;
 import pieces.Piece;
 import utils.Vec;
@@ -11,8 +12,8 @@ public class Board {
         return ourInstance;
     }
 
-    private final Vec b_king = new Vec(4,0);
-    private final Vec w_king = new Vec(4,7);
+    private Vec b_king = new Vec(4,0);
+    private Vec w_king = new Vec(4,7);
 
     private final Piece[][] pieces = new Piece[8][8];
 
@@ -42,5 +43,10 @@ public class Board {
         return w_king;
     }
 
+    void updateKing(Move m){
+        Vec king = m.getToVec();
+        if(m.getPiece().isWhite())w_king = king;
+        else b_king = king;
+    }
 
 }

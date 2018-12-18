@@ -89,7 +89,6 @@ public class KingHL extends HighlighterBase {
 
         moves.addAll(castling);
 
-        System.out.println(castling.size());
         //remove if the king can not attack
         moves.removeIf(m -> !canAttack(p,m));
 

@@ -1,14 +1,13 @@
 package board;
 
 import cache.Move;
-import cache.MoveCache;
+import cache.Promotion;
 import highlighters.HighlighterBase;
 import pieces.Piece;
 import utils.IterationObj;
 import utils.IterationObj.PieceBreak;
 import utils.IterationObj.PieceReturn;
 import utils.Vec;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,7 @@ public class Check {
     }
 
     private boolean check;
+    private boolean isWhiteCheck;
 
     private static Board board;
 
@@ -29,36 +29,34 @@ public class Check {
     private Check() {
         check = false;
         board = Board.getInstance();
-        MoveCache.getInstance().addListener(l -> {
-            while(l.next()) {
-                if (l.getAddedSize() == 1) {
-                    Move m = l.getAddedSubList().get(0);
-                    checkCheck(m);
-                }
-            }
-        });
     }
 
-    private void checkCheck(Move m){
+    void checkCheck(Move m){
+
+
+        isWhiteCheck = m.getPiece().isWhite();
 
         //clear checkers from last check
         checkers.clear();
 
-        Piece p = m.getPiece();
-                    //check already equals false so don't need to reset it
-        if(p == null)return;
+        final Piece p;
+
+        if(m instanceof Promotion) {
+            p = board.getPieces()[m.getToX()][m.getToY()];
+            System.out.println(p.highlighter());
+        }
+        else p = m.getPiece();
 
         //get opposite king of just moved
         Vec king = (p.isWhite()) ? Board.getInstance().getB_king() : Board.getInstance().getW_king();
                                                 //make an object that will iterate from the king to the piece
-
 
         check = p.highlighter().canAttack(p,king);
 
         //add piece to the checkers
         if(check)checkers.add(p);
 
-        Vec place = m.getToVec();
+        Vec place = m.getFromVec();
         if(place == null)return;
 
 
@@ -86,7 +84,7 @@ public class Check {
 
         Piece checker = obj.iterate(br,ret);
 
-        if(checker != null){
+        if(checker != null && !checkers.contains(checker)){
             checkers.add(checker);
             check = true;
         }
@@ -117,5 +115,9 @@ public class Check {
 
     public boolean isCheck(){
         return check;
+    }
+
+    public boolean isWhiteCheck(){
+        return isWhiteCheck;
     }
 }

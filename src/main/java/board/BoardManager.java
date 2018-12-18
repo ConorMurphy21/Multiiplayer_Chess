@@ -4,6 +4,7 @@ import Animators.PieceAnimator;
 import Animators.PromoteAnimator;
 import Animators.TakeAnimator;
 import cache.*;
+import highlighters.KingHL;
 import javafx.application.Platform;
 import pieces.Piece;
 import pieces.PieceFactory;
@@ -11,6 +12,9 @@ import pieces.PieceFactory;
 class BoardManager {
 
     void updateBoard(Piece[][] board,Move m){
+        if(m.getPiece().highlighter() instanceof KingHL){
+            Board.getInstance().updateKing(m);
+        }
         switch (m.getChar()){
             case 'n':
                 normal(board,(NormalMove) m);
@@ -25,6 +29,7 @@ class BoardManager {
                 promotion(board, (Promotion) m);
                 break;
         }
+        Check.getInstance().checkCheck(m);
     }
 
     private void normal(Piece[][] board,NormalMove move){
@@ -83,7 +88,7 @@ class BoardManager {
 
     }
 
-    private void promotion(Piece[][] board, Promotion move){
+    private synchronized void promotion(Piece[][] board, Promotion move){
 
         Piece newPiece = PieceFactory.create(move.getToX(),move.getToY(),move.getNewType(),move.getPiece().isWhite());
 
@@ -91,10 +96,13 @@ class BoardManager {
 
         board[move.getFromX()][move.getFromY()] = null;
 
+
         PromoteAnimator.startInNewThread(move.getPiece(),newPiece,move.getToX(),move.getToY());
 
         Piece take = board[move.getToX()][move.getToY()];
         if(take != null) TakeAnimator.startInNewThread(take);
+
+        board[move.getToX()][move.getToY()] = newPiece;
 
         Platform.runLater(newPiece::ini);
 
