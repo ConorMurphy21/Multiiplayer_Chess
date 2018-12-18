@@ -49,6 +49,7 @@ public class KingHL extends HighlighterBase {
         for(int i = p.getX()+1; i < 8; i++){
             if((rook = pieces[i][p.getY()]) != null){
                 if(rook.highlighter() instanceof StraightHL){
+                    if(rook.isWhite() != p.isWhite())break;
                     if(rook.hasMoved())break;
                     moves.add(new Vec(p.getX()+2,p.getY()));
                 }
@@ -58,6 +59,7 @@ public class KingHL extends HighlighterBase {
         for(int i = p.getX()-1; i >= 0; i--){
             if((rook = pieces[i][p.getY()]) != null){
                 if(rook.highlighter() instanceof StraightHL){
+                    if(rook.isWhite() != p.isWhite())break;
                     if(rook.hasMoved())break;
                     moves.add(new Vec(p.getX()-2,p.getY()));
                 }
