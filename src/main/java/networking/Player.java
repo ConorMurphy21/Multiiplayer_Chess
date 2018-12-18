@@ -49,7 +49,7 @@ class Player extends Thread{
 
     //sends disconnect packet to client by the protocol in client
     private synchronized void sendDis(boolean otherPlayersClient){
-        String send = joinWithCommas("02",otherPlayersClient);
+        String send = joinWithCommas("01",otherPlayersClient);
         output.println(send);
     }
 

@@ -51,7 +51,7 @@ public class Client extends Thread {
 
     //sends a packet to the server that the client would like to quit
     public synchronized void sendQuit(){
-       String send = "05";
+       String send = "01";
        out.println(send);
     }
 

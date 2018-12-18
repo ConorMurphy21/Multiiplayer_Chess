@@ -26,8 +26,12 @@ public class Promotion extends Move {
         return 'p';
     }
 
+    public char getNewType(){
+        return newType;
+    }
+
     public static Move fromPacket(String[] parts){
         int[] terms = Move.intTerms(parts,4);
-        return new Promotion(terms[0],terms[1],terms[2],terms[3],parts[4].charAt(0));
+        return new Promotion(terms[0],terms[1],terms[2],terms[3],parts[5].charAt(0));
     }
 }

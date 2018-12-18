@@ -4,6 +4,7 @@ import Animators.PieceAnimator;
 import Animators.PromoteAnimator;
 import Animators.TakeAnimator;
 import cache.*;
+import javafx.application.Platform;
 import pieces.Piece;
 import pieces.PieceFactory;
 
@@ -84,7 +85,7 @@ class BoardManager {
 
     private void promotion(Piece[][] board, Promotion move){
 
-        Piece newPiece = PieceFactory.create(move.getToX(),move.getToY());
+        Piece newPiece = PieceFactory.create(move.getToX(),move.getToY(),move.getNewType(),move.getPiece().isWhite());
 
         if(newPiece == null)return;
 
@@ -92,10 +93,10 @@ class BoardManager {
 
         PromoteAnimator.startInNewThread(move.getPiece(),newPiece,move.getToX(),move.getToY());
 
-        Piece take = board[move.getToX()][move.getFromY()];
+        Piece take = board[move.getToX()][move.getToY()];
         if(take != null) TakeAnimator.startInNewThread(take);
 
-        newPiece.ini();
+        Platform.runLater(newPiece::ini);
 
         //make sure after initialized it does not have a graphic node at first
         newPiece.getNode().setOpacity(0);

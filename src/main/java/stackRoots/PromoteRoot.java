@@ -20,7 +20,7 @@ public class PromoteRoot extends StackRoot{
         hbox.setAlignment(Pos.CENTER);
         setCenter(hbox);
         setStyle("-fx-background-color: #00EFFF99");
-        String dis = su.isFlipped() ? "d" : "l";
+        String dis = pond.isWhite() ? "l" : "d";
         char[] pNames = {'n', 'q', 'b', 'r'};
 
         for(int i = 0; i < 4; i++){
