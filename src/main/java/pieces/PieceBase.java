@@ -30,6 +30,8 @@ public abstract class PieceBase implements Piece {
     PieceBase(boolean isWhite, int x, int y){
         xxProperty = new SimpleDoubleProperty(x);
         yyProperty = new SimpleDoubleProperty(y);
+        this.x = x;
+        this.y = y;
         this.isWhite = isWhite;
         hasMoved = false;
     }

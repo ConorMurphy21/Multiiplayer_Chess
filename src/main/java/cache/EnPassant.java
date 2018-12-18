@@ -7,7 +7,7 @@ public class EnPassant extends Move{
         super(fromX, fromY, toX, toY);
     }
 
-    private EnPassant(Piece piece, int toX, int toY) {
+    public EnPassant(Piece piece, int toX, int toY) {
         super(piece, toX, toY);
     }
 

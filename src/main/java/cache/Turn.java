@@ -15,8 +15,10 @@ public class Turn {
 
     private Turn() {
         MoveCache.getInstance().addListener(l -> {
-            if(l.getAddedSize() == 1)
-                toggleTurn();
+            while(l.next()) {
+                if (l.getAddedSize() == 1)
+                    toggleTurn();
+            }
 
         });
     }

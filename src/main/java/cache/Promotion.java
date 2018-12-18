@@ -11,7 +11,7 @@ public class Promotion extends Move {
         this.newType = newType;
     }
 
-    private Promotion(Piece piece, int toX, int toY, char newType) {
+    public Promotion(Piece piece, int toX, int toY, char newType) {
         super(piece, toX, toY);
         this.newType = newType;
     }

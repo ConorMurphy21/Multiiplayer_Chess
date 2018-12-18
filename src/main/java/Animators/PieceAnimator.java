@@ -31,6 +31,7 @@ public class PieceAnimator extends Animator {
     void tick(double percent){
         double x = startX + (xDif * percent);
         double y = startY + (yDif * percent);
+        System.out.println(x + " " + y);
         Platform.runLater(()->piece.moveGraphicNode(x,y));
     }
 

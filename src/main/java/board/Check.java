@@ -30,12 +30,13 @@ public class Check {
         check = false;
         board = Board.getInstance();
         MoveCache.getInstance().addListener(l -> {
-                    if(l.getAddedSize() == 1) {
-                        Move m = l.getAddedSubList().get(0);
-                        checkCheck(m);
-                    }
+            while(l.next()) {
+                if (l.getAddedSize() == 1) {
+                    Move m = l.getAddedSubList().get(0);
+                    checkCheck(m);
                 }
-        );
+            }
+        });
     }
 
     private void checkCheck(Move m){

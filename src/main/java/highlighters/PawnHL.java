@@ -5,7 +5,7 @@ import cache.Move;
 import cache.MoveCache;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.PromoteHighlight;
-import highlighters.graphics.SlideHighlight;
+import highlighters.graphics.EnPassantHighlight;
 import pieces.Piece;
 import utils.Vec;
 
@@ -49,7 +49,7 @@ public class PawnHL extends HighlighterBase {
 
     Highlight highlight(Piece p, int x, int y){
         if(Math.abs(p.getX()-x) == 1 && pieces[x][y] == null){
-            return new SlideHighlight(p,x,y,pieces[x][y-dir(p)]);
+            return new EnPassantHighlight(p,x,y);
         }
         if(y == 7 || y == 0){
             return new PromoteHighlight(p,x,y);
@@ -81,11 +81,10 @@ public class PawnHL extends HighlighterBase {
                 list.add(new Vec(p.getX() - 1, p.getY() + dir));
         }
 
-        Board board = Board.getInstance();
         Move m = MoveCache.getInstance().getLastMove();
+        if(m == null)return list;
         Piece lm = m.getPiece();
         Vec lastLoc = m.getFromVec();
-        if(lm == null)return list;
 
         if((lm.highlighter() instanceof PawnHL)){
             if(lm.getY() == p.getY() && Math.abs(lm.getX()-p.getX())==1){

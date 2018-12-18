@@ -22,7 +22,7 @@ public class CastleMove extends Move {
         rook = Board.getInstance().getPieces()[rFromX][rFromY];
     }
 
-    private CastleMove(Piece piece, int toX, int toY, Piece rook, int rToX, int rToY) {
+    public CastleMove(Piece piece, int toX, int toY, Piece rook, int rToX, int rToY) {
         super(piece, toX, toY);
         this.rook = rook;
         this.rToX = rToX;

@@ -7,7 +7,7 @@ public class NormalMove extends Move {
         super(fromX, fromY, toX, toY);
     }
 
-    private NormalMove(Piece piece, int toX, int toY) {
+    public NormalMove(Piece piece, int toX, int toY) {
         super(piece, toX, toY);
     }
 

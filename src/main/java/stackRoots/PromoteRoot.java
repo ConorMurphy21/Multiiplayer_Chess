@@ -1,6 +1,9 @@
 package stackRoots;
 
 import board.Board;
+import cache.Move;
+import cache.MoveCache;
+import cache.Promotion;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import pieces.Piece;
@@ -27,13 +30,8 @@ public class PromoteRoot extends StackRoot{
 
             final int t = i;
             p.setOnMouseClicked(e->{
-                Board.getInstance().promoteFromClient(pond,
-                        PieceFactory.create(x,
-                                y,
-                                pNames[t],
-                                !su.isFlipped()),
-                        x,
-                        y);
+                Move move = new Promotion(pond,x,y,pNames[t]);
+                MoveCache.getInstance().addMove(move,false);
                 pop();
             });
 

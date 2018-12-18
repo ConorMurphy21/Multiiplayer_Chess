@@ -19,8 +19,10 @@ public class Board {
     private Board(){
         BoardManager bm = new BoardManager();
         MoveCache.getInstance().addListener( l -> {
-            if(l.getAddedSize() == 1)
-                bm.updateBoard(pieces,l.getAddedSubList().get(0));
+            while(l.next()) {
+                if (l.getAddedSize() == 1)
+                    bm.updateBoard(pieces, l.getAddedSubList().get(0));
+            }
         });
     }
 

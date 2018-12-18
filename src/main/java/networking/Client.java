@@ -38,10 +38,12 @@ public class Client extends Thread {
 
     private void addMoveListenerToSend(){
         moveCache.addListener(l -> {
-            if(l.getAddedSize() == 1){
-                Move m = l.getAddedSubList().get(0);
-                if(m.getPiece().isWhite() == this.isWhite){
-                    sendMove(m);
+            while(l.next()) {
+                if(l.getAddedSize() == 1){
+                    Move m = l.getAddedSubList().get(0);
+                    if (m.getPiece().isWhite() == this.isWhite) {
+                        sendMove(m);
+                    }
                 }
             }
         });

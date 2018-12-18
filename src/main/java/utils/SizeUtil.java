@@ -82,8 +82,7 @@ public class SizeUtil {
 
     /** INSTANCE MANAGEMENT **/
     public static void createInstance(ReadOnlyDoubleProperty width, ReadOnlyDoubleProperty height, boolean isWhite){
-        if(ourInstance != null)
-        else ourInstance = new SizeUtil(width, height,isWhite);
+        if(ourInstance == null) ourInstance = new SizeUtil(width, height,isWhite);
     }
 
     public static SizeUtil getInstance() {
