@@ -31,7 +31,6 @@ public class PieceAnimator extends Animator {
     void tick(double percent){
         double x = startX + (xDif * percent);
         double y = startY + (yDif * percent);
-        System.out.println(x + " " + y);
         Platform.runLater(()->piece.moveGraphicNode(x,y));
     }
 
@@ -40,8 +39,7 @@ public class PieceAnimator extends Animator {
     }
 
     public static void startInNewThread(Piece p, int endX, int endY){
-        new Thread(()->
-            new PieceAnimator(p,endX,endY).start()
-        ).start();
+        PieceAnimator ani = new PieceAnimator(p,endX,endY);
+        new Thread(ani::start).start();
     }
 }

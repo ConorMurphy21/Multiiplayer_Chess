@@ -18,7 +18,7 @@ public class Promotion extends Move {
 
     @Override
     public String asPacket() {
-        return super.asPacket() + ',' + newType;
+        return "05," + super.asPacket() + ',' + newType;
     }
 
     @Override

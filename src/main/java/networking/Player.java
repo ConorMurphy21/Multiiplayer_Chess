@@ -142,7 +142,7 @@ class Player extends Thread{
                     case "05":
 
                         //send the packet sent back to the opponent
-                        sendPacket(message.substring(3));
+                        opponent.sendPacket(message);
                 }
             }
         } catch (IOException e) {

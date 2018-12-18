@@ -24,8 +24,7 @@ public class TakeAnimator extends Animator {
     }
 
     public static void startInNewThread(Piece p){
-        new Thread(()->
-                new TakeAnimator(p).start()
-        ).start();
+        TakeAnimator ani = new TakeAnimator(p);
+        new Thread(ani::start).start();
     }
 }

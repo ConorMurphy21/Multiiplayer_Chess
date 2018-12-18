@@ -8,6 +8,7 @@ public class StringJoin {
         for (Object arg : args) {
             line += arg + ",";
         }
+        line = line.substring(0,line.length()-1);
         return line;
     }
 }

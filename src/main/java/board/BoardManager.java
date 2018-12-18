@@ -28,9 +28,9 @@ class BoardManager {
 
     private void normal(Piece[][] board,NormalMove move){
 
-        move.getPiece().movePiece(move.getToX(),move.getToY());
-
         PieceAnimator.startInNewThread(move.getPiece(),move.getToX(),move.getToY());
+
+        move.getPiece().movePiece(move.getToX(),move.getToY());
 
         Piece take = board[move.getToX()][move.getToY()];
         if(take != null)
@@ -40,17 +40,18 @@ class BoardManager {
 
         board[move.getToX()][move.getToY()] = move.getPiece();
 
+
     }
 
     private void castle(Piece[][] board, CastleMove move){
 
-        move.getPiece().movePiece(move.getToX(),move.getToY());
-
-        move.getRook().movePiece(move.getrToX(),move.getrToY());
-
         PieceAnimator.startInNewThread(move.getPiece(),move.getToX(),move.getToY());
 
         PieceAnimator.startInNewThread(move.getRook(),move.getrToX(),move.getrToY());
+
+        move.getPiece().movePiece(move.getToX(),move.getToY());
+
+        move.getRook().movePiece(move.getrToX(),move.getrToY());
 
         board[move.getFromX()][move.getFromY()] = null;
 
@@ -64,13 +65,13 @@ class BoardManager {
 
     private void enPassant(Piece[][] board, EnPassant move){
 
-        move.getPiece().movePiece(move.getToX(),move.getToY());
-
         PieceAnimator.startInNewThread(move.getPiece(),move.getToX(),move.getToY());
+
+        move.getPiece().movePiece(move.getToX(),move.getToY());
 
         //the x coordinate of the taken piece is always the same
         //the y coordinate is either 4 or 5 depending on which side is attacking
-        int y = (move.getPiece().isWhite())? 4 : 5;
+        int y = (move.getPiece().isWhite())? 3 : 4;
         Piece take = board[move.getToX()][y];
 
         TakeAnimator.startInNewThread(take);
@@ -78,6 +79,7 @@ class BoardManager {
         board[move.getFromX()][move.getFromY()] = null;
 
         board[move.getToX()][move.getToY()] = move.getPiece();
+
     }
 
     private void promotion(Piece[][] board, Promotion move){

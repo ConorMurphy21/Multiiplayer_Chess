@@ -21,4 +21,8 @@ public class EnPassant extends Move{
         return new EnPassant(terms[0],terms[1],terms[2],terms[3]);
     }
 
+    @Override
+    public String asPacket() {
+        return "03,"+super.asPacket();
+    }
 }

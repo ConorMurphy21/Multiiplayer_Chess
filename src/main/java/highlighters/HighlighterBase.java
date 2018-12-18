@@ -244,10 +244,8 @@ public abstract class HighlighterBase implements Highlighter {
         if (aggressorMoves != null && protectKing != null) {
             return new ArrayList<>();
         } else if (aggressorMoves != null) {
-            System.out.println("we are protecting");
             finalMoves = aggressorMoves;
         } else if (protectKing != null) {
-            System.out.println("It is check");
             finalMoves = protectKing;
         } else {
             finalMoves = regularHighlight(p);

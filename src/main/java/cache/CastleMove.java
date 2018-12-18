@@ -38,7 +38,7 @@ public class CastleMove extends Move {
 
     @Override
     public String asPacket() {
-        return super.asPacket() + ',' + StringJoin.joinWithCommas(rFromX,rFromY,rToX,rToX);
+        return "04" + super.asPacket() + ',' + StringJoin.joinWithCommas(rFromX,rFromY,rToX,rToX);
     }
 
     public static Move fromPacket(String[] parts){

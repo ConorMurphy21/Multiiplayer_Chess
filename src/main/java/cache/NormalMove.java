@@ -20,5 +20,10 @@ public class NormalMove extends Move {
         int[] terms = Move.intTerms(parts,4);
         return new NormalMove(terms[0],terms[1],terms[2],terms[3]);
     }
+
+    @Override
+    public String asPacket() {
+        return "02,"+super.asPacket();
+    }
 }
 

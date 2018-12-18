@@ -41,9 +41,8 @@ public class PromoteAnimator extends PieceAnimator {
     }
 
     public static void startInNewThread(Piece p, Piece newP,int endX, int endY){
-        new Thread(()->
-                new PromoteAnimator(p,newP,endX,endY).start()
-        ).start();
+        PromoteAnimator ani = new PromoteAnimator(p,newP,endX,endY);
+        new Thread(ani::start).start();
     }
 
 }

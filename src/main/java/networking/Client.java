@@ -125,6 +125,7 @@ public class Client extends Thread {
                      * apply move in clients game
                      */
                     case "02":
+                        //System.out.println("here");
                         Move move = NormalMove.fromPacket(parts);
                         moveCache.addMove(move,true);
                         break;
