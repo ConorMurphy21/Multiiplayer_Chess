@@ -70,6 +70,16 @@ public class KingHL extends HighlighterBase {
         return moves;
     }
 
+    boolean castlingThroughCheck(Vec v, Piece p, List<Vec> moves){
+        int dif = p.getX() - v.getX();
+            //not a castle move
+        if(Math.abs(dif) != 2)return false;
+
+                                //check if the moves contains a vector in between the castle and the king
+                                //if it doesn't this means that it would be castling through a check
+        return !moves.contains(new Vec(v.getX() + dif/2,v.getY()));
+    }
+
     Highlight highlight(Piece p,int x, int y){
         if(Math.abs(p.getX()-x) > 1){
             if(p.getX() > x){
@@ -94,6 +104,8 @@ public class KingHL extends HighlighterBase {
         //remove if the king can not attack
         moves.removeIf(m -> !canAttack(p,m));
 
+        //remove any castling moves that castle through a check
+        moves.removeIf(v -> castlingThroughCheck(v,p,moves));
 
         return moves;
     }

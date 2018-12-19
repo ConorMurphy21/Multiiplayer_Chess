@@ -35,6 +35,7 @@ public class PieceAnimator extends Animator {
     }
 
     void onEnd(){
+        Platform.runLater(()->piece.moveGraphicNode(endX,endY));
         stop();
     }
 
