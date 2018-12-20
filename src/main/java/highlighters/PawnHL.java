@@ -1,8 +1,7 @@
 package highlighters;
 
-import board.Board;
-import cache.Move;
-import cache.MoveCache;
+import log.Move;
+import log.MoveLog;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.PromoteHighlight;
 import highlighters.graphics.EnPassantHighlight;
@@ -81,7 +80,7 @@ public class PawnHL extends HighlighterBase {
                 list.add(new Vec(p.getX() - 1, p.getY() + dir));
         }
 
-        Move m = MoveCache.getInstance().getLastMove();
+        Move m = MoveLog.getInstance().getLastMove();
         if(m == null)return list;
         Piece lm = m.getPiece();
         Vec lastLoc = m.getFromVec();

@@ -1,4 +1,4 @@
-package cache;
+package log;
 
 import board.Board;
 import pieces.Piece;

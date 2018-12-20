@@ -1,4 +1,4 @@
-package cache;
+package log;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -7,20 +7,20 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 
 
-public class MoveCache {
+public class MoveLog {
 
 
     private final ObservableList<Move> moves = FXCollections.observableArrayList(new ArrayList<>());
 
-    private static final MoveCache ourInstance = new MoveCache();
+    private static final MoveLog ourInstance = new MoveLog();
 
     private Turn turn;
 
-    public static MoveCache getInstance(){
+    public static MoveLog getInstance(){
         return ourInstance;
     }
 
-    private MoveCache(){
+    private MoveLog(){
     }
 
     public void addMove(Move move, boolean fromServer){

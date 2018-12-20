@@ -2,7 +2,7 @@ package highlighters;
 
 import board.Board;
 import board.Check;
-import cache.Turn;
+import log.Turn;
 import highlighters.graphics.Highlight;
 import highlighters.graphics.HighlightGroup;
 import pieces.Piece;

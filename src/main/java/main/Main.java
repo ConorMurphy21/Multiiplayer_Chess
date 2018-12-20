@@ -1,7 +1,7 @@
 package main;
 
 import board.graphics.BoardGroup;
-import cache.Turn;
+import log.Turn;
 import highlighters.graphics.HighlightGroup;
 import javafx.application.Application;
 import javafx.scene.Group;

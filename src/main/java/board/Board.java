@@ -1,7 +1,7 @@
 package board;
 
-import cache.Move;
-import cache.MoveCache;
+import log.Move;
+import log.MoveLog;
 import pieces.Piece;
 import utils.Vec;
 
@@ -19,7 +19,7 @@ public class Board {
 
     private Board(){
         BoardManager bm = new BoardManager();
-        MoveCache.getInstance().addListener( l -> {
+        MoveLog.getInstance().addListener(l -> {
             while(l.next()) {
                 if (l.getAddedSize() == 1)
                     bm.updateBoard(pieces, l.getAddedSubList().get(0));

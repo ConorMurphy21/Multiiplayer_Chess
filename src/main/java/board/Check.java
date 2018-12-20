@@ -1,9 +1,9 @@
 package board;
 
-import cache.CastleMove;
-import cache.Move;
-import cache.NormalMove;
-import cache.Promotion;
+import log.CastleMove;
+import log.Move;
+import log.NormalMove;
+import log.Promotion;
 import highlighters.HighlighterBase;
 import pieces.Piece;
 import utils.IterationObj;

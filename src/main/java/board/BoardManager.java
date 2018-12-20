@@ -3,7 +3,7 @@ package board;
 import Animators.PieceAnimator;
 import Animators.PromoteAnimator;
 import Animators.TakeAnimator;
-import cache.*;
+import log.*;
 import highlighters.KingHL;
 import javafx.application.Platform;
 import pieces.Piece;

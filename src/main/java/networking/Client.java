@@ -1,6 +1,6 @@
 package networking;
 
-import cache.*;
+import log.*;
 import javafx.application.Platform;
 import main.Main;
 
@@ -19,14 +19,14 @@ public class Client extends Thread {
     private PrintWriter out;
     private BufferedReader in;
     private static final int PORT = 6666;
-    private static MoveCache moveCache;
+    private static MoveLog moveLog;
 
     public static Client getInstance(){
         return ourInstance;
     }
 
     private Client(){
-        moveCache = MoveCache.getInstance();
+        moveLog = MoveLog.getInstance();
     }
 
     private void startConnection(String ip) throws IOException {
@@ -37,7 +37,7 @@ public class Client extends Thread {
 
 
     private void addMoveListenerToSend(){
-        moveCache.addListener(l -> {
+        moveLog.addListener(l -> {
             while(l.next()) {
                 if(l.getAddedSize() == 1){
                     Move m = l.getAddedSubList().get(0);
@@ -127,7 +127,7 @@ public class Client extends Thread {
                     case "02":
                         //System.out.println("here");
                         Move move = NormalMove.fromPacket(parts);
-                        moveCache.addMove(move,true);
+                        moveLog.addMove(move,true);
                         break;
 
                    /*
@@ -135,7 +135,7 @@ public class Client extends Thread {
                     */
                     case "03":
                         move = EnPassant.fromPacket(parts);
-                        moveCache.addMove(move,true);
+                        moveLog.addMove(move,true);
                         break;
 
                         /*
@@ -144,7 +144,7 @@ public class Client extends Thread {
 
                     case "04":
                         move = CastleMove.fromPacket(parts);
-                        moveCache.addMove(move,true);
+                        moveLog.addMove(move,true);
                         break;
 
                     /*
@@ -153,7 +153,7 @@ public class Client extends Thread {
                     case "05":
                         //parse values of what piece is moving where
                         move = Promotion.fromPacket(parts);
-                        moveCache.addMove(move,true);
+                        moveLog.addMove(move,true);
                         break;
                 }
 

@@ -1,9 +1,9 @@
 package highlighters.graphics;
 
 import board.Board;
-import cache.Move;
-import cache.MoveCache;
-import cache.NormalMove;
+import log.Move;
+import log.MoveLog;
+import log.NormalMove;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import pieces.Piece;
@@ -28,7 +28,7 @@ public class Highlight extends Rectangle {
         setOnMouseExited(e -> setFill(color));
         setOnMouseClicked(e -> {
             Move move = new NormalMove(piece,x,y);
-            MoveCache.getInstance().addMove(move,false);
+            MoveLog.getInstance().addMove(move,false);
             HighlightGroup.clear();
         });
     }

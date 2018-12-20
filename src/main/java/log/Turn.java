@@ -1,4 +1,4 @@
-package cache;
+package log;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -14,7 +14,7 @@ public class Turn {
     private final BooleanProperty turn = new SimpleBooleanProperty(false);
 
     private Turn() {
-        MoveCache.getInstance().addListener(l -> {
+        MoveLog.getInstance().addListener(l -> {
             while(l.next()) {
                 if (l.getAddedSize() == 1)
                     toggleTurn();
