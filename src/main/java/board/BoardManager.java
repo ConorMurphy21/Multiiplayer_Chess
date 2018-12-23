@@ -34,6 +34,8 @@ class BoardManager {
 
     private void normal(Piece[][] board,NormalMove move){
 
+        //TODO: insert Gudrun woosh sound here
+
         PieceAnimator.startInNewThread(move.getPiece(),move.getToX(),move.getToY());
 
         move.getPiece().movePiece(move.getToX(),move.getToY());
