@@ -6,6 +6,8 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 public class MoveLog {
@@ -79,6 +81,10 @@ public class MoveLog {
 
                     //return true if it is enpassant or promotion, not castle
         }else return !(move instanceof CastleMove);
+    }
+
+    public List<Move> getMoves(){
+        return moves;
     }
 
     public void addListener(ListChangeListener<? super Move> listChangeListener){

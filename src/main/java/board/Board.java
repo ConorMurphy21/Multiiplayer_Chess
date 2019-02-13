@@ -21,7 +21,7 @@ public class Board {
         BoardManager bm = new BoardManager();
         MoveLog.getInstance().addListener(l -> {
             while(l.next()) {
-                if (l.getAddedSize() == 1)
+                if (l.wasAdded())
                     bm.updateBoard(pieces, l.getAddedSubList().get(0));
             }
         });

@@ -30,6 +30,7 @@ class BoardManager {
                 break;
         }
         Check.getInstance().checkCheck(m);
+        Draw.checkForDraw(board);
     }
 
     private void normal(Piece[][] board,NormalMove move){
